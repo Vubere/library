@@ -53,15 +53,26 @@ func (c *Controller) CreateBook(ctx *gin.Context) {
 	var book models.Book
 	err := ctx.BindJSON(&book)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "invalid request",
+			"error":   err.Error(),
+		})
 		return
 	}
 	createdBook, err := c.bookService.CreateBook(book)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+			"status":  http.StatusInternalServerError,
+		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"book": createdBook})
+	ctx.JSON(http.StatusCreated, gin.H{
+		"book": createdBook,
+		"status": http.StatusCreated,
+		"message": "success",
+	})
 }
 
 func (c *Controller) GetBookById(ctx *gin.Context) {
@@ -72,10 +83,18 @@ func (c *Controller) GetBookById(ctx *gin.Context) {
 	}
 	book, err := c.bookService.GetBookById(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"message": "error",
+			"status":  http.StatusNotFound,
+			"error":   err.Error(),
+		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"book": book})
+	ctx.JSON(http.StatusOK, gin.H{
+		"book": book,
+		"status": http.StatusOK,
+		"message": "success",
+	})
 }
 
 func (c *Controller) UpdateBook(ctx *gin.Context) {
@@ -86,20 +105,35 @@ func (c *Controller) UpdateBook(ctx *gin.Context) {
 	}
 	book, err := c.bookService.GetBookById(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"message": err.Error(),
+			"status":  http.StatusNotFound,
+		})
 		return
 	}
 	err = ctx.BindJSON(&book)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "invalid request",
+			"error":   err.Error(),
+			"status":  http.StatusBadRequest,
+		})
 		return
 	}
 	updatedBook, err := c.bookService.UpdateBook(book)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+			"status":  http.StatusInternalServerError,
+		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"book": updatedBook})
+	ctx.JSON(http.StatusOK, gin.H{
+		"book": updatedBook,
+		"status": http.StatusOK,
+		"message": "Book  updated!",
+	})
 }
 
 func (c *Controller) DeleteBook(ctx *gin.Context) {
@@ -113,5 +147,5 @@ func (c *Controller) DeleteBook(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "book deleted", "status": http.StatusOK})
 }

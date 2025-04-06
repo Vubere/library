@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"time"
 	"victorubere/library/lib/helpers"
 	"victorubere/library/lib/structs"
 	"victorubere/library/models"
@@ -47,8 +48,14 @@ func (b *BookRepository) List(query structs.Query, bookQuery structs.BookQuery) 
 	if bookQuery.Publisher != "" {
 		dbExec = dbExec.Where("publisher = ?", bookQuery.Publisher)
 	}
-	if bookQuery.Year != "" {
-		dbExec = dbExec.Where("year = ?", bookQuery.Year)
+	if bookQuery.Year != 0 {
+		firstDayOfYear := time.Date(bookQuery.Year, time.January, 1, 0, 0, 0, 0, time.UTC)
+		lastDayOfYear := time.Date(bookQuery.Year, time.December, 31, 23, 59, 59, 0, time.UTC)
+		dbExec = dbExec.Where("publication_date BETWEEN ? AND ?", firstDayOfYear, lastDayOfYear)
+	}
+	if bookQuery.BookYearsOld != 0 {
+		timeYearsAgo := time.Now().AddDate(-bookQuery.BookYearsOld, 0, 0)
+		dbExec = dbExec.Where("publication_date >= ?", timeYearsAgo)
 	}
 	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&books).Count(&count).Error
 	if err != nil {
@@ -58,11 +65,21 @@ func (b *BookRepository) List(query structs.Query, bookQuery structs.BookQuery) 
 }
 
 func (b *BookRepository) Create(book models.Book) (models.Book, error) {
-	return models.Book{}, nil
+	err := b.db.Create(&book).Error
+	if err != nil {
+		return models.Book{}, err
+	}
+	return book, nil
 }
 
 func (b *BookRepository) Update(book models.Book) (models.Book, error) {
-	return models.Book{}, nil
+	var Book models.Book = book
+	Book.UpdatedAt = time.Now()
+	err := b.db.Model(&models.Book{}).Where("id = ?", Book.ID).Updates(&Book).Error
+	if err != nil {
+		return models.Book{}, err
+	}
+	return Book, nil
 }
 
 func (b *BookRepository) Delete(id int) error {

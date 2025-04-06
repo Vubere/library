@@ -43,7 +43,8 @@ type BookQuery struct {
 	Genre string `form:"genre"`
 	ISBN string `form:"isbn"`
 	Publisher string `form:"publisher"`
-	Year string `form:"year"`
+	BookYearsOld int `form:"book_years_old"`
+	Year int `form:"year"`
 }
 
 type Model struct {
