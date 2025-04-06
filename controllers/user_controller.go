@@ -28,7 +28,7 @@ func (c *Controller) GetAllUsers(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	err = helpers.BindUserQuery(ctx, &userQuery)
+	err = helpers.BindModelQuery(ctx, &userQuery)
 	if err != nil {
 		return
 	}

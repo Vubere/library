@@ -23,16 +23,7 @@ func BindQuery(ctx *gin.Context, query *structs.Query) error {
 
 	return nil
 }
-func BindUserQuery(ctx *gin.Context, query *structs.UserQuery) error {
-	err := ctx.ShouldBindQuery(query)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
-		return errors.New("invalid request")
-	}
-	return nil
-}
-
-func BindBookQuery(ctx *gin.Context, query *structs.BookQuery) error {
+func BindModelQuery[T  structs.UserQuery | structs.BookQuery | structs.VisitationQuery | structs.BookReadQuery](ctx *gin.Context, query *T) error {
 	err := ctx.ShouldBindQuery(query)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})

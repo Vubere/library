@@ -29,7 +29,7 @@ func (c *Controller) GetAllBooks(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	err = helpers.BindBookQuery(ctx, &bookQuery)
+	err = helpers.BindModelQuery(ctx, &bookQuery)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return

@@ -23,10 +23,10 @@ type IBookService interface {
 }
 
 type IVisitationService interface {
-	GetAllVisitations(query structs.Query) ([]models.Visitation, error)
-	CreateVisitation(visitation models.Visitation) (models.Visitation, error)
-	GetVisitationById(id int) (models.Visitation, error)
-	UpdateVisitation(visitation models.Visitation) (models.Visitation, error)
+	GetAllVisitations(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64, error)
+	CreateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error)
+	GetVisitationById(id int) (models.Visitations, error)
+	UpdateVisitation(visitation models.Visitations) (models.Visitations, error)
 	DeleteVisitation(id int) error
 }
 
@@ -36,4 +36,12 @@ type IBorrowedService interface {
 	GetBorrowedById(id int) (models.Borrowed, error)
 	UpdateBorrowed(borrowed models.Borrowed) (models.Borrowed, error)
 	DeleteBorrowed(id int) error
+}
+
+type IBookReadsService interface {
+	GetAllBookReads(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, error)
+	CreateBookRead(bookRead models.BookRead) (models.BookRead, error)
+	GetBookReadById(id int) (models.BookRead, error)
+	UpdateBookRead(bookRead models.BookRead) (models.BookRead, error)
+	DeleteBookRead(id int) error
 }

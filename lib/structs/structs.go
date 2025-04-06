@@ -47,6 +47,27 @@ type BookQuery struct {
 	Year         int    `form:"year"`
 }
 
+type VisitationQuery struct {
+	UserID    int `form:"user_id"`
+	VisitedAt time.Time `form:"visited_at"`
+	Duration  int `form:"duration"`
+	VisitedAtStart time.Time `form:"visited_at_start"`
+	VisitedAtEnd time.Time `form:"visited_at_end"`
+}
+
+type BookReadQuery struct {
+	UserID    int `form:"user_id"`
+	BookID    int `form:"book_id"`
+	VisitationID int `form:"visitation_id"`
+	Duration  int `form:"duration"`
+}
+
+type BorrowedQuery struct {
+	UserID    int `form:"user_id"`
+	BookID    int `form:"book_id"`
+	Duration  int `form:"duration"`
+}
+
 type Model struct {
 	ID        uint      `gorm:"primarykey" json:"id"`
 	CreatedAt time.Time `json:"created_at"`

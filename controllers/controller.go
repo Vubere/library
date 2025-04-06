@@ -34,6 +34,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 	v1 := router.Group("/api/v1")
 	c.UserController(v1)
 	c.BookController(v1)
+	c.VisitationController(v1)
 
 	return router, nil
 }

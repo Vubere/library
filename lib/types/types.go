@@ -8,7 +8,7 @@ import (
 type Duration int
 
 func (d *Duration) MarshalJSON() ([]byte, error) {
-	jsonValue := fmt.Sprintf("%d min", d)
+	jsonValue := fmt.Sprintf("%d hrs", d)
 
 	quotedJSONValue := strconv.Quote(jsonValue)
 

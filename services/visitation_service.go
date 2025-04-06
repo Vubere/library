@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"victorubere/library/lib/structs"
 	"victorubere/library/models"
 	"victorubere/library/repository"
@@ -16,34 +17,41 @@ func NewVisitationService(repository repository.IVisitationRepository) IVisitati
 	}
 }
 
-func (v *VisitationService) GetAllVisitations(query structs.Query) ([]models.Visitation, error) {
-	visitations, err := v.repository.List(query)
+func (v *VisitationService) GetAllVisitations(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64, error) {
+	visitations, count, err := v.repository.List(query, visitationQuery)
 	if err != nil {
-		return []models.Visitation{}, err
+		return []models.Visitations{}, 0, err
 	}
-	return visitations, nil
+	return visitations, count, nil
 }
 
-func (v *VisitationService) CreateVisitation(visitation models.Visitation) (models.Visitation, error) {
+func (v *VisitationService) CreateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error) {
+	_, err := UserService.GetUserById(visitation.UserId)
+	if err != nil {
+		if err.Error() == "record not found" {
+			return models.Visitations{}, errors.New("user not found")
+		}
+		return models.Visitations{}, err
+	}
 	createdVisitation, err := v.repository.Create(visitation)
 	if err != nil {
-		return models.Visitation{}, err
+		return models.Visitations{}, err
 	}
 	return createdVisitation, nil
 }
 
-func (v *VisitationService) GetVisitationById(id int) (models.Visitation, error) {
+func (v *VisitationService) GetVisitationById(id int) (models.Visitations, error) {
 	visitation, err := v.repository.GetById(id)
 	if err != nil {
-		return models.Visitation{}, err
+		return models.Visitations{}, err
 	}
 	return visitation, nil
 }
 
-func (v *VisitationService) UpdateVisitation(visitation models.Visitation) (models.Visitation, error) {
+func (v *VisitationService) UpdateVisitation(visitation models.Visitations) (models.Visitations, error) {
 	updatedVisitation, err := v.repository.Update(visitation)
 	if err != nil {
-		return models.Visitation{}, err
+		return models.Visitations{}, err
 	}
 	return updatedVisitation, nil
 }

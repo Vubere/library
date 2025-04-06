@@ -23,17 +23,25 @@ type IBookRepository interface {
 }
 
 type IVisitationRepository interface {
-	GetById(id int) (models.Visitation, error)
-	List(query structs.Query) ([]models.Visitation, error)
-	Create(visitation models.Visitation) (models.Visitation, error)
-	Update(visitation models.Visitation) (models.Visitation, error)
+	GetById(id int) (models.Visitations, error)
+	List(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64,	 error)
+	Create(visitation models.Visitations) (models.Visitations, error)
+	Update(visitation models.Visitations) (models.Visitations, error)
 	Delete(id int) error
 }
 
 type IBorrowedRepository interface {
 	GetById(id int) (models.Borrowed, error)
-	List(query structs.Query) ([]models.Borrowed, error)
+	List(query structs.Query, borrowedQuery structs.BorrowedQuery) ([]models.Borrowed, int64, error)
 	Create(borrowed models.Borrowed) (models.Borrowed, error)
 	Update(borrowed models.Borrowed) (models.Borrowed, error)
+	Delete(id int) error
+}
+
+type IBookReadsRepository interface {
+	GetById(id int) (models.BookRead, error)
+	List(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, int64,	 error)
+	Create(bookRead models.BookRead) (models.BookRead, error)
+	Update(bookRead models.BookRead) (models.BookRead, error)
 	Delete(id int) error
 }
