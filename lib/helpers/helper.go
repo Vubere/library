@@ -20,7 +20,7 @@ func BindQuery(ctx *gin.Context, query *structs.Query) error {
 	if query.PerPage == 0 {
 		query.PerPage = 10
 	}
-	
+
 	return nil
 }
 func BindUserQuery(ctx *gin.Context, query *structs.UserQuery) error {
@@ -45,7 +45,7 @@ func GetOffset(query structs.Query) int {
 	return (query.Page - 1) * query.PerPage
 }
 
-func GenerateMeta(count int64, query structs.Query) structs.Meta	{
+func GenerateMeta(count int64, query structs.Query) structs.Meta {
 	var nextPage int
 	if count > int64(query.PerPage) {
 		nextPage = query.Page + 1
@@ -54,10 +54,10 @@ func GenerateMeta(count int64, query structs.Query) structs.Meta	{
 	}
 	nextPageAvailable := count > int64(query.PerPage)
 	meta := structs.Meta{
-		TotalRecords: count,
-		Page: query.Page,
-		PerPage: query.PerPage,
-		NextPage: nextPage,
+		TotalRecords:      count,
+		Page:              query.Page,
+		PerPage:           query.PerPage,
+		NextPage:          nextPage,
 		NextPageAvailable: nextPageAvailable,
 	}
 	return meta

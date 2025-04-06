@@ -15,7 +15,7 @@ type IUserService interface {
 }
 
 type IBookService interface {
-	GetAllBooks(query structs.Query, bookQuery structs.BookQuery) ([]models.Book,int64, error)
+	GetAllBooks(query structs.Query, bookQuery structs.BookQuery) ([]models.Book, int64, error)
 	CreateBook(book models.Book) (models.Book, error)
 	GetBookById(id int) (models.Book, error)
 	UpdateBook(book models.Book) (models.Book, error)

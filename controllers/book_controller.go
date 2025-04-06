@@ -42,9 +42,9 @@ func (c *Controller) GetAllBooks(ctx *gin.Context) {
 	}
 	meta := helpers.GenerateMeta(count, query)
 	ctx.JSON(http.StatusOK, gin.H{
-		"books": books,
-		"meta": meta,
-		"status": http.StatusOK,
+		"books":   books,
+		"meta":    meta,
+		"status":  http.StatusOK,
 		"message": "success",
 	})
 }
@@ -69,8 +69,8 @@ func (c *Controller) CreateBook(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{
-		"book": createdBook,
-		"status": http.StatusCreated,
+		"book":    createdBook,
+		"status":  http.StatusCreated,
 		"message": "success",
 	})
 }
@@ -91,8 +91,8 @@ func (c *Controller) GetBookById(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"book": book,
-		"status": http.StatusOK,
+		"book":    book,
+		"status":  http.StatusOK,
 		"message": "success",
 	})
 }
@@ -130,8 +130,8 @@ func (c *Controller) UpdateBook(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"book": updatedBook,
-		"status": http.StatusOK,
+		"book":    updatedBook,
+		"status":  http.StatusOK,
 		"message": "Book  updated!",
 	})
 }

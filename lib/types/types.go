@@ -16,4 +16,3 @@ func (d *Duration) MarshalJSON() ([]byte, error) {
 }
 
 type Envelope map[string]interface{}
-

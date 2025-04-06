@@ -39,10 +39,10 @@ func (c *Controller) GetAllUsers(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"users": users,
-		"status": http.StatusOK,
+		"users":   users,
+		"status":  http.StatusOK,
 		"message": "success",
-		"meta": helpers.GenerateMeta(count, query),
+		"meta":    helpers.GenerateMeta(count, query),
 	})
 }
 
@@ -60,7 +60,7 @@ func (c *Controller) RegisterUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"user":    createdUser,
-		"token":  "",
+		"token":   "",
 		"message": "user created",
 		"status":  http.StatusOK,
 	})
@@ -92,13 +92,13 @@ func (c *Controller) UpdateUser(ctx *gin.Context) {
 	user, err := c.userService.GetUserById(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"status": http.StatusBadRequest,
+			"status":  http.StatusBadRequest,
 			"message": "failed",
-			"error": err.Error(),
+			"error":   err.Error(),
 		})
 		return
 	}
-	
+
 	err = ctx.BindJSON(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
@@ -110,8 +110,8 @@ func (c *Controller) UpdateUser(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"user": updatedUser,
-		"status": http.StatusOK,
+		"user":    updatedUser,
+		"status":  http.StatusOK,
 		"message": "success",
 	})
 }

@@ -33,7 +33,7 @@ func (u *UserRepository) List(query structs.Query, userDetailsQuery structs.User
 	var count int64
 	dbExec := u.db
 	offset := helpers.GetOffset(query)
-	
+
 	if userDetailsQuery.Email != "" {
 		dbExec = dbExec.Where("email LIKE ?", "%"+userDetailsQuery.Email+"%")
 	}
@@ -61,14 +61,14 @@ func (u *UserRepository) List(query structs.Query, userDetailsQuery structs.User
 	}
 	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&users).Count(&count).Error
 	if err != nil {
-		return []models.User{},0, err
+		return []models.User{}, 0, err
 	}
 	return users, count, nil
 }
 
 func (u *UserRepository) Create(user models.User) (models.User, error) {
-	
-	err:= u.db.Create(&user).Error
+
+	err := u.db.Create(&user).Error
 	if err != nil {
 		return models.User{}, err
 	}
@@ -76,9 +76,9 @@ func (u *UserRepository) Create(user models.User) (models.User, error) {
 }
 
 func (u *UserRepository) Update(user models.User) (models.User, error) {
-	var User models.User = user;
+	var User models.User = user
 	User.UpdatedAt = time.Now()
-	err := u.db.Model(&models.User{}).Where("id = ?", User.ID).Updates(&User).Error
+	err := u.db.Model(&models.User{}).Where("id = ?", User.ID).Omit("id",  "created_at").Updates(&User).Error
 	if err != nil {
 		return models.User{}, err
 	}
@@ -86,7 +86,7 @@ func (u *UserRepository) Update(user models.User) (models.User, error) {
 }
 
 func (u *UserRepository) Delete(id int) error {
-	return u.db.Delete(&models.User{}, id).Error	
+	return u.db.Delete(&models.User{}, id).Error
 }
 
 func (u *UserRepository) GetByEmail(email string) (models.User, error) {

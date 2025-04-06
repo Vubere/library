@@ -28,7 +28,6 @@ func (c *Controller) GetAllReservations(ctx *gin.Context) {
 		return
 	}
 
-
 	reservations, err := c.reservationService.GetAllReservations(query)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})

@@ -75,7 +75,7 @@ func (b *BookRepository) Create(book models.Book) (models.Book, error) {
 func (b *BookRepository) Update(book models.Book) (models.Book, error) {
 	var Book models.Book = book
 	Book.UpdatedAt = time.Now()
-	err := b.db.Model(&models.Book{}).Where("id = ?", Book.ID).Updates(&Book).Error
+	err := b.db.Model(&models.Book{}).Where("id = ?", Book.ID).Omit("id",  "created_at").Updates(&Book).Error
 	if err != nil {
 		return models.Book{}, err
 	}
