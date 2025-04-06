@@ -12,17 +12,30 @@ ALTER TABLE books
 
 ALTER TABLE visitations
     ADD CONSTRAINT vst_fk_user 
-    FOREIGN KEY (user_id) REFERENCES users (id);
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE;
 
-ALTER TABLE visitations
-    ADD CONSTRAINT vst_fk_book
-    FOREIGN KEY (book_id) REFERENCES books (id);
-
-ALTER TABLE reservations
-    ADD CONSTRAINT rst_fk_user
+ALTER TABLE borroweds
+    ADD CONSTRAINT brw_fk_user
     FOREIGN KEY (user_id) REFERENCES users (id);
     
-ALTER TABLE reservations
-    ADD CONSTRAINT rst_fk_book
-    FOREIGN KEY (book_id) REFERENCES books (id);
+ALTER TABLE borroweds
+    ADD CONSTRAINT brw_fk_book
+    FOREIGN KEY (book_id) REFERENCES books (id)
+    ON DELETE CASCADE;
+
+ALTER TABLE book_reads
+    ADD CONSTRAINT rd_fk_user
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE;
     
+ALTER TABLE book_reads
+    ADD CONSTRAINT rd_fk_book
+    FOREIGN KEY (book_id) REFERENCES books (id)
+    ON DELETE CASCADE;
+
+ALTER TABLE book_reads
+    ADD CONSTRAINT rd_fk_visitation
+    FOREIGN KEY (visitation_id) REFERENCES visitations (id) 
+    ON DELETE CASCADE;
+

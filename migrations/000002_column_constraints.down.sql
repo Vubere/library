@@ -13,8 +13,17 @@ ALTER TABLE visitations
 ALTER TABLE visitations
     DROP CONSTRAINT vst_fk_book;
 
-ALTER TABLE reservations
-    DROP CONSTRAINT rst_fk_user;
+ALTER TABLE borroweds
+    DROP CONSTRAINT brw_fk_user;
     
-ALTER TABLE reservations
-    DROP CONSTRAINT rst_fk_book;
+ALTER TABLE borroweds
+    DROP CONSTRAINT brw_fk_book;
+
+ALTER TABLE book_reads
+    DROP CONSTRAINT rd_fk_user;
+    
+ALTER TABLE book_reads
+    DROP CONSTRAINT rd_fk_book;
+
+ALTER TABLE book_reads
+    DROP CONSTRAINT rd_fk_visitation;

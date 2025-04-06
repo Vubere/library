@@ -35,10 +35,10 @@ func main() {
 	visitationRepository := repository.NewVisitationRepository(app.gormDB)
 	visitationService := services.NewVisitationService(visitationRepository)
 
-	reservationRepository := repository.NewReservationRepository(app.gormDB)
-	reservationService := services.NewReservationService(reservationRepository)
+	borrowedRepository := repository.NewBorrowedRepository(app.gormDB)
+	borrowedService := services.NewBorrowedService(borrowedRepository)
 
-	controller := controllers.NewController(userService, bookService, visitationService, reservationService)
+	controller := controllers.NewController(userService, bookService, visitationService, borrowedService)
 
 	router, err := controller.InitializeRoutes()
 	if err != nil {

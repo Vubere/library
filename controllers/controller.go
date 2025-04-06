@@ -12,15 +12,15 @@ type Controller struct {
 	userService        services.IUserService
 	bookService        services.IBookService
 	visitationService  services.IVisitationService
-	reservationService services.IReservationService
+	borrowedService services.IBorrowedService
 }
 
-func NewController(userService services.IUserService, bookService services.IBookService, visitationService services.IVisitationService, reservationService services.IReservationService) *Controller {
+func NewController(userService services.IUserService, bookService services.IBookService, visitationService services.IVisitationService, borrowedService services.IBorrowedService) *Controller {
 	return &Controller{
 		userService:        userService,
 		bookService:        bookService,
 		visitationService:  visitationService,
-		reservationService: reservationService,
+		borrowedService: borrowedService,
 	}
 }
 

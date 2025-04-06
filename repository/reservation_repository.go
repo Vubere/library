@@ -7,32 +7,32 @@ import (
 	"gorm.io/gorm"
 )
 
-type ReservationRepository struct {
+type BorrowedRepository struct {
 	db *gorm.DB
 }
 
-func NewReservationRepository(DB *gorm.DB) IReservationRepository {
-	return &ReservationRepository{
+func NewBorrowedRepository(DB *gorm.DB) IBorrowedRepository {
+	return &BorrowedRepository{
 		db: DB,
 	}
 }
 
-func (r *ReservationRepository) GetById(id int) (models.Reservation, error) {
-	return models.Reservation{}, nil
+func (r *BorrowedRepository) GetById(id int) (models.Borrowed, error) {
+	return models.Borrowed{}, nil
 }
 
-func (r *ReservationRepository) List(query structs.Query) ([]models.Reservation, error) {
-	return []models.Reservation{}, nil
+func (r *BorrowedRepository) List(query structs.Query) ([]models.Borrowed, error) {
+	return []models.Borrowed{}, nil
 }
 
-func (r *ReservationRepository) Create(reservation models.Reservation) (models.Reservation, error) {
-	return models.Reservation{}, nil
+func (r *BorrowedRepository) Create(borrowed models.Borrowed) (models.Borrowed, error) {
+	return models.Borrowed{}, nil
 }
 
-func (r *ReservationRepository) Update(reservation models.Reservation) (models.Reservation, error) {
-	return models.Reservation{}, nil
+func (r *BorrowedRepository) Update(borrowed models.Borrowed) (models.Borrowed, error) {
+	return models.Borrowed{}, nil
 }
 
-func (r *ReservationRepository) Delete(id int) error {
+func (r *BorrowedRepository) Delete(id int) error {
 	return nil
 }

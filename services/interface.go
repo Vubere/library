@@ -30,10 +30,10 @@ type IVisitationService interface {
 	DeleteVisitation(id int) error
 }
 
-type IReservationService interface {
-	GetAllReservations(query structs.Query) ([]models.Reservation, error)
-	CreateReservation(reservation models.Reservation) (models.Reservation, error)
-	GetReservationById(id int) (models.Reservation, error)
-	UpdateReservation(reservation models.Reservation) (models.Reservation, error)
-	DeleteReservation(id int) error
+type IBorrowedService interface {
+	GetAllBorroweds(query structs.Query) ([]models.Borrowed, error)
+	CreateBorrowed(borrowed models.Borrowed) (models.Borrowed, error)
+	GetBorrowedById(id int) (models.Borrowed, error)
+	UpdateBorrowed(borrowed models.Borrowed) (models.Borrowed, error)
+	DeleteBorrowed(id int) error
 }

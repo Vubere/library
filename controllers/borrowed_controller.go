@@ -10,92 +10,92 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (c *Controller) ReservationController(rg *gin.RouterGroup) {
-	reservationsRoutes := rg.Group("/reservations")
+func (c *Controller) BorrowedController(rg *gin.RouterGroup) {
+	borrowedsRoutes := rg.Group("/borroweds")
 	{
-		reservationsRoutes.GET("", c.GetAllReservations)
-		reservationsRoutes.POST("", c.CreateReservation)
-		reservationsRoutes.GET("/:id", c.GetReservationById)
-		reservationsRoutes.PUT("/:id", c.UpdateReservation)
-		reservationsRoutes.DELETE("/:id", c.DeleteReservation)
+		borrowedsRoutes.GET("", c.GetAllBorroweds)
+		borrowedsRoutes.POST("", c.CreateBorrowed)
+		borrowedsRoutes.GET("/:id", c.GetBorrowedById)
+		borrowedsRoutes.PUT("/:id", c.UpdateBorrowed)
+		borrowedsRoutes.DELETE("/:id", c.DeleteBorrowed)
 	}
 }
 
-func (c *Controller) GetAllReservations(ctx *gin.Context) {
+func (c *Controller) GetAllBorroweds(ctx *gin.Context) {
 	var query structs.Query
 	err := helpers.BindQuery(ctx, &query)
 	if err != nil {
 		return
 	}
 
-	reservations, err := c.reservationService.GetAllReservations(query)
+	borroweds, err := c.borrowedService.GetAllBorroweds(query)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"reservations": reservations})
+	ctx.JSON(http.StatusOK, gin.H{"borroweds": borroweds})
 }
 
-func (c *Controller) CreateReservation(ctx *gin.Context) {
-	var reservation models.Reservation
-	err := ctx.BindJSON(&reservation)
+func (c *Controller) CreateBorrowed(ctx *gin.Context) {
+	var borrowed models.Borrowed
+	err := ctx.BindJSON(&borrowed)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	createdReservation, err := c.reservationService.CreateReservation(reservation)
+	createdBorrowed, err := c.borrowedService.CreateBorrowed(borrowed)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"reservation": createdReservation})
+	ctx.JSON(http.StatusOK, gin.H{"borrowed": createdBorrowed})
 }
 
-func (c *Controller) GetReservationById(ctx *gin.Context) {
+func (c *Controller) GetBorrowedById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	reservation, err := c.reservationService.GetReservationById(id)
+	borrowed, err := c.borrowedService.GetBorrowedById(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"reservation": reservation})
+	ctx.JSON(http.StatusOK, gin.H{"borrowed": borrowed})
 }
 
-func (c *Controller) UpdateReservation(ctx *gin.Context) {
+func (c *Controller) UpdateBorrowed(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	reservation, err := c.reservationService.GetReservationById(id)
+	borrowed, err := c.borrowedService.GetBorrowedById(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	err = ctx.BindJSON(&reservation)
+	err = ctx.BindJSON(&borrowed)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	updatedReservation, err := c.reservationService.UpdateReservation(reservation)
+	updatedBorrowed, err := c.borrowedService.UpdateBorrowed(borrowed)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"reservation": updatedReservation})
+	ctx.JSON(http.StatusOK, gin.H{"borrowed": updatedBorrowed})
 }
 
-func (c *Controller) DeleteReservation(ctx *gin.Context) {
+func (c *Controller) DeleteBorrowed(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	err = c.reservationService.DeleteReservation(id)
+	err = c.borrowedService.DeleteBorrowed(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return

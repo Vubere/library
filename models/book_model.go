@@ -13,7 +13,6 @@ type Book struct {
 	Publisher         string    `json:"publisher"`
 	PublicationDate   time.Time `json:"publication_date"`
 	Pages             int       `json:"pages"`
-	Price             float64   `json:"price"`
 	Description       string    `json:"description"`
 	QuantityAvailable int       `json:"quantity"`
 }
