@@ -48,7 +48,16 @@ func (v *VisitationService) GetVisitationById(id int) (models.Visitations, error
 	return visitation, nil
 }
 
-func (v *VisitationService) UpdateVisitation(visitation models.Visitations) (models.Visitations, error) {
+func (v *VisitationService) UpdateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error) {
+	if visitation.UserId != 0 {
+		_, err := UserService.GetUserById(visitation.UserId)
+		if err != nil {
+			if err.Error() == "record not found" {
+				return models.Visitations{}, errors.New("user not found")
+			}
+			return models.Visitations{}, err
+		}
+	}
 	updatedVisitation, err := v.repository.Update(visitation)
 	if err != nil {
 		return models.Visitations{}, err

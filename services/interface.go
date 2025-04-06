@@ -26,15 +26,15 @@ type IVisitationService interface {
 	GetAllVisitations(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64, error)
 	CreateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error)
 	GetVisitationById(id int) (models.Visitations, error)
-	UpdateVisitation(visitation models.Visitations) (models.Visitations, error)
+	UpdateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error)
 	DeleteVisitation(id int) error
 }
 
 type IBorrowedService interface {
-	GetAllBorroweds(query structs.Query) ([]models.Borrowed, error)
-	CreateBorrowed(borrowed models.Borrowed) (models.Borrowed, error)
+	GetAllBorroweds(query structs.Query, borrowedQuery structs.BorrowedQuery) ([]models.Borrowed, int64, error)
+	CreateBorrowed(borrowed models.Borrowed, UserService IUserService, BookService IBookService) (models.Borrowed, error)
 	GetBorrowedById(id int) (models.Borrowed, error)
-	UpdateBorrowed(borrowed models.Borrowed) (models.Borrowed, error)
+	UpdateBorrowed(borrowed models.Borrowed, UserService IUserService, BookService IBookService) (models.Borrowed, error)
 	DeleteBorrowed(id int) error
 }
 

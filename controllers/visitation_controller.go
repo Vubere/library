@@ -97,7 +97,7 @@ func (c *Controller) UpdateVisitation(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	updatedVisitation, err := c.visitationService.UpdateVisitation(visitation)
+	updatedVisitation, err := c.visitationService.UpdateVisitation(visitation, c.userService)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return

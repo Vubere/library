@@ -35,6 +35,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 	c.UserController(v1)
 	c.BookController(v1)
 	c.VisitationController(v1)
+	c.BorrowedController(v1)
 
 	return router, nil
 }

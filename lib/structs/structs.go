@@ -66,6 +66,10 @@ type BorrowedQuery struct {
 	UserID    int `form:"user_id"`
 	BookID    int `form:"book_id"`
 	Duration  int `form:"duration"`
+	BorrowedAtStart time.Time `form:"borrowed_at_start"`
+	BorrowedAtEnd time.Time `form:"borrowed_at_end"`
+	ReturnedAtStart time.Time `form:"returned_at_start"`
+	ReturnedAtEnd time.Time `form:"returned_at_end"`
 }
 
 type Model struct {
