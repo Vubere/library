@@ -45,10 +45,10 @@ func (c *Controller) GetAllVisitations(ctx *gin.Context) {
 	}
 	meta := helpers.GenerateMeta(count, query)
 	ctx.JSON(http.StatusOK, gin.H{
-		"visitations":   visitations,
-		"status":  http.StatusOK,
-		"message": "success",
-		"meta":    meta,
+		"visitations": visitations,
+		"status":      http.StatusOK,
+		"message":     "success",
+		"meta":        meta,
 	})
 }
 

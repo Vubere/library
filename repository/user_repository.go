@@ -77,7 +77,7 @@ func (u *UserRepository) Create(user models.User) (models.User, error) {
 
 func (u *UserRepository) Update(user models.User) (models.User, error) {
 	var User models.User = user
-	err := u.db.Model(&models.User{}).Where("id = ?", User.ID).Omit("id",  "created_at", "updated_at").Updates(&User).Error
+	err := u.db.Model(&models.User{}).Where("id = ?", User.ID).Omit("id", "created_at", "updated_at").Updates(&User).Error
 	if err != nil {
 		return models.User{}, err
 	}

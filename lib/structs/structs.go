@@ -48,29 +48,29 @@ type BookQuery struct {
 }
 
 type VisitationQuery struct {
-	UserID    int `form:"user_id"`
-	VisitedAt time.Time `form:"visited_at"`
-	Duration  int `form:"duration"`
+	UserID         int       `form:"user_id"`
+	VisitedAt      time.Time `form:"visited_at"`
+	Duration       int       `form:"duration"`
 	VisitedAtStart time.Time `form:"visited_at_start"`
-	VisitedAtEnd time.Time `form:"visited_at_end"`
+	VisitedAtEnd   time.Time `form:"visited_at_end"`
 }
 
 type BookReadQuery struct {
-	UserID    int `form:"user_id"`
-	BookID    int `form:"book_id"`
-	VisitationID int `form:"visitation_id"`
+	UserID        int `form:"user_id"`
+	BookID        int `form:"book_id"`
+	VisitationID  int `form:"visitation_id"`
 	DurationStart int `form:"duration_start"`
-	DurationEnd int `form:"duration_end"`
+	DurationEnd   int `form:"duration_end"`
 }
 
 type BorrowedQuery struct {
-	UserID    int `form:"user_id"`
-	BookID    int `form:"book_id"`
-	Duration  int `form:"duration"`
+	UserID          int       `form:"user_id"`
+	BookID          int       `form:"book_id"`
+	Duration        int       `form:"duration"`
 	BorrowedAtStart time.Time `form:"borrowed_at_start"`
-	BorrowedAtEnd time.Time `form:"borrowed_at_end"`
+	BorrowedAtEnd   time.Time `form:"borrowed_at_end"`
 	ReturnedAtStart time.Time `form:"returned_at_start"`
-	ReturnedAtEnd time.Time `form:"returned_at_end"`
+	ReturnedAtEnd   time.Time `form:"returned_at_end"`
 }
 
 type Model struct {

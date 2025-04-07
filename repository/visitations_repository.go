@@ -66,7 +66,7 @@ func (v *VisitationRepository) Create(visitation models.Visitations) (models.Vis
 
 func (v *VisitationRepository) Update(visitation models.Visitations) (models.Visitations, error) {
 	var Visitations models.Visitations = visitation
-	err := v.db.Model(&models.Visitations{}).Where("id = ?", Visitations.ID).Omit("id",  "created_at", "updated_at").Updates(&Visitations).Error
+	err := v.db.Model(&models.Visitations{}).Where("id = ?", Visitations.ID).Omit("id", "created_at", "updated_at").Updates(&Visitations).Error
 	if err != nil {
 		return models.Visitations{}, err
 	}

@@ -24,7 +24,7 @@ type IBookRepository interface {
 
 type IVisitationRepository interface {
 	GetById(id int) (models.Visitations, error)
-	List(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64,	 error)
+	List(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64, error)
 	Create(visitation models.Visitations) (models.Visitations, error)
 	Update(visitation models.Visitations) (models.Visitations, error)
 	Delete(id int) error

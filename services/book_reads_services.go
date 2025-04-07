@@ -72,7 +72,7 @@ func (r *BookReadService) UpdateBookRead(bookRead models.BookRead, userService I
 			return models.BookRead{}, err
 		}
 	}
-	
+
 	if bookRead.BookID != 0 {
 		_, err := bookService.GetBookById(int(bookRead.BookID))
 		if err != nil {

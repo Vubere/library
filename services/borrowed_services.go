@@ -47,7 +47,7 @@ func (r *BorrowedService) CreateBorrowed(borrowed models.Borrowed, userService I
 	return createdBorrowed, nil
 }
 
-func (r *BorrowedService) GetBorrowedById(id int) (models.Borrowed, error) {	
+func (r *BorrowedService) GetBorrowedById(id int) (models.Borrowed, error) {
 	return r.repository.GetById(id)
 }
 
@@ -61,7 +61,7 @@ func (r *BorrowedService) UpdateBorrowed(borrowed models.Borrowed, userService I
 			return models.Borrowed{}, err
 		}
 	}
-	
+
 	if borrowed.BookId != 0 {
 		_, err := bookService.GetBookById(borrowed.BookId)
 		if err != nil {

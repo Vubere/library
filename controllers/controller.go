@@ -9,20 +9,20 @@ import (
 )
 
 type Controller struct {
-	userService        services.IUserService
-	bookService        services.IBookService
-	visitationService  services.IVisitationService
-	borrowedService services.IBorrowedService
-	bookReadService services.IBookReadsService
+	userService       services.IUserService
+	bookService       services.IBookService
+	visitationService services.IVisitationService
+	borrowedService   services.IBorrowedService
+	bookReadService   services.IBookReadsService
 }
 
 func NewController(userService services.IUserService, bookService services.IBookService, visitationService services.IVisitationService, borrowedService services.IBorrowedService, bookReadService services.IBookReadsService) *Controller {
 	return &Controller{
-		userService:        userService,
-		bookService:        bookService,
-		visitationService:  visitationService,
-		borrowedService: borrowedService,
-		bookReadService: bookReadService,
+		userService:       userService,
+		bookService:       bookService,
+		visitationService: visitationService,
+		borrowedService:   borrowedService,
+		bookReadService:   bookReadService,
 	}
 }
 
@@ -33,7 +33,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
-	//write endpoints to handle all options request 
+	//write endpoints to handle all options request
 	router.OPTIONS("/*", func(ctx *gin.Context) {
 		ctx.Header("Access-Control-Allow-Origin", "*")
 		ctx.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")

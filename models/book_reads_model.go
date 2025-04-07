@@ -7,8 +7,8 @@ import (
 
 type BookRead struct {
 	structs.Model
-	UserID  uint  `json:"user_id"`
-	BookID  uint   `json:"book_id"`
-	VisitationID uint  `json:"visitation_id"`
-	Duration types.Duration	`json:"duration"`
+	UserID       uint           `json:"user_id"`
+	BookID       uint           `json:"book_id"`
+	VisitationID uint           `json:"visitation_id"`
+	Duration     types.Duration `json:"duration"`
 }

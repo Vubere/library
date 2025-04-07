@@ -57,14 +57,18 @@ migrate/fix:confirm
 # ==================================================================================== #
 ## audit: tidy dependencies and format, vet and test all code
 .PHONY: audit
-audit:vendor
-	@echo 'Formatting code...'
-	go fmt ./...
-	staticcheck ./...
+audit:format vendor
 	@echo 'Vetting code...'
 	go vet ./...
 	@echo 'Running tests...'
 	go test -race -vet=off ./...
+
+## format: format code
+.PHONY: format
+format:
+	@echo 'Formatting code...'
+	go fmt ./...
+	staticcheck ./...
 
 ## vendor: tidy and vendor dependencies
 .PHONY:vendor

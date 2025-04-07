@@ -6,7 +6,7 @@ import (
 	"victorubere/library/lib/types"
 )
 
-type Visitations struct { 
+type Visitations struct {
 	structs.Model
 	UserId    int            `json:"user_id"`
 	VisitedAt time.Time      `json:"visited_at"`

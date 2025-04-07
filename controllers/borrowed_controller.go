@@ -43,10 +43,10 @@ func (c *Controller) GetAllBorroweds(ctx *gin.Context) {
 	}
 	meta := helpers.GenerateMeta(count, query)
 	ctx.JSON(http.StatusOK, gin.H{
-		"borroweds":   borroweds,
-		"status":  http.StatusOK,
-		"message": "success",
-		"meta":    meta,
+		"borroweds": borroweds,
+		"status":    http.StatusOK,
+		"message":   "success",
+		"meta":      meta,
 	})
 }
 

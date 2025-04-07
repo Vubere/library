@@ -42,10 +42,10 @@ func (c *Controller) GetAllBookReads(ctx *gin.Context) {
 	}
 	meta := helpers.GenerateMeta(count, query)
 	ctx.JSON(http.StatusOK, gin.H{
-		"book_reads":   bookReads,
-		"status":  http.StatusOK,
-		"message": "success",
-		"meta":    meta,
+		"book_reads": bookReads,
+		"status":     http.StatusOK,
+		"message":    "success",
+		"meta":       meta,
 	})
 }
 
@@ -87,14 +87,14 @@ func (c *Controller) UpdateBookRead(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
-	}	
+	}
 	bookRead, err := c.bookReadService.GetBookReadById(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
 	}
 	err = ctx.BindJSON(&bookRead)
-	if err != nil {	
+	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
@@ -105,8 +105,8 @@ func (c *Controller) UpdateBookRead(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"book_read": updatedBookRead,
-		"status":  http.StatusOK,
-		"message": "success",
+		"status":    http.StatusOK,
+		"message":   "success",
 	})
 }
 
