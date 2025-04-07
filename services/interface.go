@@ -40,8 +40,8 @@ type IBorrowedService interface {
 
 type IBookReadsService interface {
 	GetAllBookReads(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, error)
-	CreateBookRead(bookRead models.BookRead) (models.BookRead, error)
+	CreateBookRead(bookRead models.BookRead, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookRead, error)
 	GetBookReadById(id int) (models.BookRead, error)
-	UpdateBookRead(bookRead models.BookRead) (models.BookRead, error)
+	UpdateBookRead(bookRead models.BookRead, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookRead, error)
 	DeleteBookRead(id int) error
 }

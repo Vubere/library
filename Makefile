@@ -34,7 +34,7 @@ build:
 ## run: run the cmd/api application
 .PHONY: run
 run:
-	@CompileDaemon -directory=./ -build="go build -o ${BUILD_DIR} ${CMD_DIR}" -command="${EXECUTABLE_PATH}"
+	@CompileDaemon -exclude "./bin" -directory=./ -build="go build -o ${BUILD_DIR} ${CMD_DIR}" -command="${EXECUTABLE_PATH}"
 
 ## migrate/new name=$1: create a new database migration
 migrate/new:

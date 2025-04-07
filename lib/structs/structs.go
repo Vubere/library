@@ -59,7 +59,8 @@ type BookReadQuery struct {
 	UserID    int `form:"user_id"`
 	BookID    int `form:"book_id"`
 	VisitationID int `form:"visitation_id"`
-	Duration  int `form:"duration"`
+	DurationStart int `form:"duration_start"`
+	DurationEnd int `form:"duration_end"`
 }
 
 type BorrowedQuery struct {

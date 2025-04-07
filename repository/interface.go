@@ -40,7 +40,7 @@ type IBorrowedRepository interface {
 
 type IBookReadsRepository interface {
 	GetById(id int) (models.BookRead, error)
-	List(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, int64,	 error)
+	List(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, error)
 	Create(bookRead models.BookRead) (models.BookRead, error)
 	Update(bookRead models.BookRead) (models.BookRead, error)
 	Delete(id int) error
