@@ -10,20 +10,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (c *Controller) BookReadsController(rg *gin.RouterGroup) {
+func (c *Controller) BookReadssController(rg *gin.RouterGroup) {
 	bookReadsRoutes := rg.Group("/book-reads")
 	{
-		bookReadsRoutes.GET("", c.GetAllBookReads)
-		bookReadsRoutes.POST("", c.CreateBookRead)
-		bookReadsRoutes.GET("/:id", c.GetBookReadById)
-		bookReadsRoutes.PUT("/:id", c.UpdateBookRead)
-		bookReadsRoutes.DELETE("/:id", c.DeleteBookRead)
+		bookReadsRoutes.GET("", c.GetAllBookReadss)
+		bookReadsRoutes.POST("", c.CreateBookReads)
+		bookReadsRoutes.GET("/:id", c.GetBookReadsById)
+		bookReadsRoutes.PUT("/:id", c.UpdateBookReads)
+		bookReadsRoutes.DELETE("/:id", c.DeleteBookReads)
 	}
 }
 
-func (c *Controller) GetAllBookReads(ctx *gin.Context) {
+func (c *Controller) GetAllBookReadss(ctx *gin.Context) {
 	var query structs.Query
-	var bookReadQuery structs.BookReadQuery
+	var bookReadQuery structs.BookReadsQuery
 	err := helpers.BindQuery(ctx, &query)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
@@ -35,9 +35,9 @@ func (c *Controller) GetAllBookReads(ctx *gin.Context) {
 		return
 	}
 
-	bookReads, count, err := c.bookReadService.GetAllBookReads(query, bookReadQuery)
+	bookReads, count, err := c.bookReadService.GetAllBookReadss(query, bookReadQuery)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
 	meta := helpers.GenerateMeta(count, query)
@@ -49,28 +49,28 @@ func (c *Controller) GetAllBookReads(ctx *gin.Context) {
 	})
 }
 
-func (c *Controller) CreateBookRead(ctx *gin.Context) {
-	var bookRead models.BookRead
+func (c *Controller) CreateBookReads(ctx *gin.Context) {
+	var bookRead models.BookReads
 	err := ctx.BindJSON(&bookRead)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})
 		return
 	}
-	createdBookRead, err := c.bookReadService.CreateBookRead(bookRead, c.userService, c.bookService, c.visitationService)
+	createdBookReads, err := c.bookReadService.CreateBookReads(bookRead, c.userService, c.bookService, c.visitationService)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"book_read": createdBookRead, "status": http.StatusCreated, "message": "success"})
+	ctx.JSON(http.StatusCreated, gin.H{"book_read": createdBookReads, "status": http.StatusCreated, "message": "success"})
 }
 
-func (c *Controller) GetBookReadById(ctx *gin.Context) {
+func (c *Controller) GetBookReadsById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})
 		return
 	}
-	bookRead, err := c.bookReadService.GetBookReadById(id)
+	bookRead, err := c.bookReadService.GetBookReadsById(id)
 	if err != nil {
 		if err.Error() == "record not found" {
 			ctx.JSON(http.StatusNotFound, gin.H{"message": "record not found"})
@@ -82,13 +82,13 @@ func (c *Controller) GetBookReadById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"book_read": bookRead, "status": http.StatusOK, "message": "success"})
 }
 
-func (c *Controller) UpdateBookRead(ctx *gin.Context) {
+func (c *Controller) UpdateBookReads(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	bookRead, err := c.bookReadService.GetBookReadById(id)
+	bookRead, err := c.bookReadService.GetBookReadsById(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return
@@ -98,25 +98,25 @@ func (c *Controller) UpdateBookRead(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	updatedBookRead, err := c.bookReadService.UpdateBookRead(bookRead, c.userService, c.bookService, c.visitationService)
+	updatedBookReads, err := c.bookReadService.UpdateBookReads(bookRead, c.userService, c.bookService, c.visitationService)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"book_read": updatedBookRead,
+		"book_read": updatedBookReads,
 		"status":    http.StatusOK,
 		"message":   "success",
 	})
 }
 
-func (c *Controller) DeleteBookRead(ctx *gin.Context) {
+func (c *Controller) DeleteBookReads(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
-	err = c.bookReadService.DeleteBookRead(id)
+	err = c.bookReadService.DeleteBookReads(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
 		return

@@ -13,7 +13,7 @@ import (
 func (c *Controller) VisitationController(rg *gin.RouterGroup) {
 	visitationsRoutes := rg.Group("/visitations")
 	{
-		visitationsRoutes.GET("", c.GetAllVisitations)
+		visitationsRoutes.GET("", c.GetAllVisitation)
 		visitationsRoutes.POST("", c.CreateVisitation)
 		visitationsRoutes.GET("/:id", c.GetVisitationById)
 		visitationsRoutes.PUT("/:id", c.UpdateVisitation)
@@ -21,7 +21,7 @@ func (c *Controller) VisitationController(rg *gin.RouterGroup) {
 	}
 }
 
-func (c *Controller) GetAllVisitations(ctx *gin.Context) {
+func (c *Controller) GetAllVisitation(ctx *gin.Context) {
 	var query structs.Query
 	var visitationQuery structs.VisitationQuery
 	err := helpers.BindQuery(ctx, &query)
@@ -35,7 +35,7 @@ func (c *Controller) GetAllVisitations(ctx *gin.Context) {
 		return
 	}
 
-	visitations, count, err := c.visitationService.GetAllVisitations(query, visitationQuery)
+	visitations, count, err := c.visitationService.GetAllVisitation(query, visitationQuery)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "error",
@@ -53,7 +53,7 @@ func (c *Controller) GetAllVisitations(ctx *gin.Context) {
 }
 
 func (c *Controller) CreateVisitation(ctx *gin.Context) {
-	var visitation models.Visitations
+	var visitation models.Visitation
 	err := ctx.BindJSON(&visitation)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})

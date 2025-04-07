@@ -55,7 +55,7 @@ type VisitationQuery struct {
 	VisitedAtEnd   time.Time `form:"visited_at_end"`
 }
 
-type BookReadQuery struct {
+type BookReadsQuery struct {
 	UserID        int `form:"user_id"`
 	BookID        int `form:"book_id"`
 	VisitationID  int `form:"visitation_id"`

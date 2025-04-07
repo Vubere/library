@@ -54,3 +54,8 @@ func (u *UserService) UpdateUser(user models.User) (models.User, error) {
 	}
 	return updatedUser, nil
 }
+
+
+func (u *UserService) GetUserByEmail(email string) (models.User, error) {
+	return u.userRepository.GetByEmail(email)
+}

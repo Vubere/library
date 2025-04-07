@@ -13,10 +13,10 @@ type Controller struct {
 	bookService       services.IBookService
 	visitationService services.IVisitationService
 	borrowedService   services.IBorrowedService
-	bookReadService   services.IBookReadsService
+	bookReadService   services.IBookReadssService
 }
 
-func NewController(userService services.IUserService, bookService services.IBookService, visitationService services.IVisitationService, borrowedService services.IBorrowedService, bookReadService services.IBookReadsService) *Controller {
+func NewController(userService services.IUserService, bookService services.IBookService, visitationService services.IVisitationService, borrowedService services.IBorrowedService, bookReadService services.IBookReadssService) *Controller {
 	return &Controller{
 		userService:       userService,
 		bookService:       bookService,
@@ -34,7 +34,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 	})
 
 	//write endpoints to handle all options request
-	router.OPTIONS("/*", func(ctx *gin.Context) {
+	router.OPTIONS("/*path", func(ctx *gin.Context) {
 		ctx.Header("Access-Control-Allow-Origin", "*")
 		ctx.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		ctx.Header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
@@ -47,7 +47,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 	c.BookController(v1)
 	c.VisitationController(v1)
 	c.BorrowedController(v1)
-	c.BookReadsController(v1)
+	c.BookReadssController(v1)
 
 	return router, nil
 }

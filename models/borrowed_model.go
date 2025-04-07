@@ -11,4 +11,6 @@ type Borrowed struct {
 	BookId     int       `json:"book_id"`
 	BorrowedAt time.Time `json:"borrowed_at"`
 	ReturnedAt time.Time `json:"returned_at"`
+	User       User      `json:"user"`
+	Book       Book      `json:"book"`
 }

@@ -7,69 +7,69 @@ import (
 	repository "victorubere/library/repository"
 )
 
-type BookReadService struct {
-	repository repository.IBookReadsRepository
+type BookReadsService struct {
+	repository repository.IBookReadssRepository
 }
 
-func NewBookReadService(repository repository.IBookReadsRepository) IBookReadsService {
-	return &BookReadService{
+func NewBookReadsService(repository repository.IBookReadssRepository) IBookReadssService {
+	return &BookReadsService{
 		repository: repository,
 	}
 }
 
-func (r *BookReadService) GetAllBookReads(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, error) {
+func (r *BookReadsService) GetAllBookReadss(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]models.BookReads, int64, error) {
 	bookReads, count, err := r.repository.List(query, bookReadQuery)
 	if err != nil {
-		return []models.BookRead{}, 0, err
+		return []models.BookReads{}, 0, err
 	}
 	return bookReads, count, nil
 }
 
-func (r *BookReadService) CreateBookRead(bookRead models.BookRead, userService IUserService, bookService IBookService, visitationService IVisitationService) (models.BookRead, error) {
+func (r *BookReadsService) CreateBookReads(bookRead models.BookReads, userService IUserService, bookService IBookService, visitationService IVisitationService) (models.BookReads, error) {
 	_, err := userService.GetUserById(int(bookRead.UserID))
 	if err != nil {
 		if err.Error() == "record not found" {
-			return models.BookRead{}, errors.New("user not found")
+			return models.BookReads{}, errors.New("user not found")
 		}
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
 	_, err = bookService.GetBookById(int(bookRead.BookID))
 	if err != nil {
 		if err.Error() == "record not found" {
-			return models.BookRead{}, errors.New("book not found")
+			return models.BookReads{}, errors.New("book not found")
 		}
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
 	_, err = visitationService.GetVisitationById(int(bookRead.VisitationID))
 	if err != nil {
 		if err.Error() == "record not found" {
-			return models.BookRead{}, errors.New("visitation not found")
+			return models.BookReads{}, errors.New("visitation not found")
 		}
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
-	createdBookRead, err := r.repository.Create(bookRead)
+	createdBookReads, err := r.repository.Create(bookRead)
 	if err != nil {
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
-	return createdBookRead, nil
+	return createdBookReads, nil
 }
 
-func (r *BookReadService) GetBookReadById(id int) (models.BookRead, error) {
+func (r *BookReadsService) GetBookReadsById(id int) (models.BookReads, error) {
 	bookRead, err := r.repository.GetById(id)
 	if err != nil {
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
 	return bookRead, nil
 }
 
-func (r *BookReadService) UpdateBookRead(bookRead models.BookRead, userService IUserService, bookService IBookService, visitationService IVisitationService) (models.BookRead, error) {
+func (r *BookReadsService) UpdateBookReads(bookRead models.BookReads, userService IUserService, bookService IBookService, visitationService IVisitationService) (models.BookReads, error) {
 	if bookRead.UserID != 0 {
 		_, err := userService.GetUserById(int(bookRead.UserID))
 		if err != nil {
 			if err.Error() == "record not found" {
-				return models.BookRead{}, errors.New("user not found")
+				return models.BookReads{}, errors.New("user not found")
 			}
-			return models.BookRead{}, err
+			return models.BookReads{}, err
 		}
 	}
 
@@ -77,9 +77,9 @@ func (r *BookReadService) UpdateBookRead(bookRead models.BookRead, userService I
 		_, err := bookService.GetBookById(int(bookRead.BookID))
 		if err != nil {
 			if err.Error() == "record not found" {
-				return models.BookRead{}, errors.New("book not found")
+				return models.BookReads{}, errors.New("book not found")
 			}
-			return models.BookRead{}, err
+			return models.BookReads{}, err
 		}
 	}
 
@@ -87,19 +87,19 @@ func (r *BookReadService) UpdateBookRead(bookRead models.BookRead, userService I
 		_, err := visitationService.GetVisitationById(int(bookRead.VisitationID))
 		if err != nil {
 			if err.Error() == "record not found" {
-				return models.BookRead{}, errors.New("visitation not found")
+				return models.BookReads{}, errors.New("visitation not found")
 			}
-			return models.BookRead{}, err
+			return models.BookReads{}, err
 		}
 	}
-	updatedBookRead, err := r.repository.Update(bookRead)
+	updatedBookReads, err := r.repository.Update(bookRead)
 	if err != nil {
-		return models.BookRead{}, err
+		return models.BookReads{}, err
 	}
-	return updatedBookRead, nil
+	return updatedBookReads, nil
 }
 
-func (r *BookReadService) DeleteBookRead(id int) error {
+func (r *BookReadsService) DeleteBookReads(id int) error {
 	err := r.repository.Delete(id)
 	if err != nil {
 		return err

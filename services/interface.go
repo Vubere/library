@@ -23,10 +23,10 @@ type IBookService interface {
 }
 
 type IVisitationService interface {
-	GetAllVisitations(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitations, int64, error)
-	CreateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error)
-	GetVisitationById(id int) (models.Visitations, error)
-	UpdateVisitation(visitation models.Visitations, UserService IUserService) (models.Visitations, error)
+	GetAllVisitation(query structs.Query, visitationQuery structs.VisitationQuery) ([]models.Visitation, int64, error)
+	CreateVisitation(visitation models.Visitation, UserService IUserService) (models.Visitation, error)
+	GetVisitationById(id int) (models.Visitation, error)
+	UpdateVisitation(visitation models.Visitation, UserService IUserService) (models.Visitation, error)
 	DeleteVisitation(id int) error
 }
 
@@ -38,10 +38,10 @@ type IBorrowedService interface {
 	DeleteBorrowed(id int) error
 }
 
-type IBookReadsService interface {
-	GetAllBookReads(query structs.Query, bookReadQuery structs.BookReadQuery) ([]models.BookRead, int64, error)
-	CreateBookRead(bookRead models.BookRead, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookRead, error)
-	GetBookReadById(id int) (models.BookRead, error)
-	UpdateBookRead(bookRead models.BookRead, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookRead, error)
-	DeleteBookRead(id int) error
+type IBookReadssService interface {
+	GetAllBookReadss(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]models.BookReads, int64, error)
+	CreateBookReads(bookRead models.BookReads, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookReads, error)
+	GetBookReadsById(id int) (models.BookReads, error)
+	UpdateBookReads(bookRead models.BookReads, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookReads, error)
+	DeleteBookReads(id int) error
 }

@@ -38,8 +38,8 @@ func main() {
 	borrowedRepository := repository.NewBorrowedRepository(app.gormDB)
 	borrowedService := services.NewBorrowedService(borrowedRepository)
 
-	bookReadRepository := repository.NewBookReadRepository(app.gormDB)
-	bookReadService := services.NewBookReadService(bookReadRepository)
+	bookReadRepository := repository.NewBookReadsRepository(app.gormDB)
+	bookReadService := services.NewBookReadsService(bookReadRepository)
 
 	controller := controllers.NewController(userService, bookService, visitationService, borrowedService, bookReadService)
 
