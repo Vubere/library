@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
-	"victorubere/library/lib/library_contants"
+	"victorubere/library/lib/library_constants"
 	"victorubere/library/lib/structs"
 	"victorubere/library/middlewares"
 	"victorubere/library/models"
@@ -16,10 +16,10 @@ func (c *Controller) BookReadssController(rg *gin.RouterGroup) {
 	bookReadsRoutes := rg.Group("/book-reads")
 	{
 		bookReadsRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllBookReadss)
-		bookReadsRoutes.POST("", middlewares.ValidateJWT(c.userService),  middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateBookReads)
+		bookReadsRoutes.POST("", middlewares.ValidateJWT(c.userService),  middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateBookReads)
 		bookReadsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetBookReadsById)
-		bookReadsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateBookReads)
-		bookReadsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.DeleteBookReads)
+		bookReadsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.UpdateBookReads)
+		bookReadsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.DeleteBookReads)
 	}
 }
 

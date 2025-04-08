@@ -6,7 +6,7 @@ import (
 	"strings"
 	"victorubere/library/jwt_manager"
 	"victorubere/library/lib/helpers"
-	"victorubere/library/lib/library_contants"
+	"victorubere/library/lib/library_constants"
 	"victorubere/library/models"
 	"victorubere/library/services"
 
@@ -18,12 +18,16 @@ func ValidateUserId(userService services.IUserService) gin.HandlerFunc {
 		userId, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+			c.Abort()
+
 			return
 		}
 		user, err := userService.GetUserById(userId)
 		if err != nil {
 			if err.Error() == "record not found" {
 				c.JSON(http.StatusBadRequest, gin.H{"message": "user not found"})
+				c.Abort()
+
 				return
 			}
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
@@ -41,9 +45,12 @@ func ValidateUserEmail(userService services.IUserService) gin.HandlerFunc {
 		if err != nil {
 			if err.Error() == "record not found" {
 				c.JSON(http.StatusBadRequest, gin.H{"message": "user not found"})
+				c.Abort()
+
 				return
 			}
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+			c.Abort()
 			return
 		}
 		c.Set("User", user)
@@ -55,13 +62,16 @@ func ValidateUserEmail(userService services.IUserService) gin.HandlerFunc {
 func ValidateUserRole(role string, userService services.IUserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user, ok := c.MustGet("User").(models.User)
-		if ok {
+		if !ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
+			c.Abort()
+
 			return
 		}
 		if role != user.Role {
 			c.JSON(http.StatusForbidden, gin.H{"message": "your role is not authorized to access this resource", "status": http.StatusForbidden})
-			return
+			c.Abort()
+			return 
 		}
 		c.Next()
 	}
@@ -74,18 +84,21 @@ func ValidateJWT(userService services.IUserService) gin.HandlerFunc {
 		AuthorizationSlice := strings.Split(Authorization, " ")
 		if len(AuthorizationSlice) != 2 {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized", "status": http.StatusUnauthorized})
+			c.Abort()
 			return
 		}
 		tokenString := AuthorizationSlice[1]
 		claims, err := jwt_manager.VerifyToken(tokenString)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized", "status": http.StatusUnauthorized})
+			c.Abort()
 			return
 		}
-		user_id := claims["user_id"].(int)
-		user, err := userService.GetUserById(user_id)
+		user_id := claims["user_id"].(float64)
+		user, err := userService.GetUserById(int(user_id))
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized", "status": http.StatusUnauthorized})
+			c.Abort()
 			return
 		}
 		c.Set("User", user)
@@ -101,15 +114,21 @@ func ValidateUserPassword(userService services.IUserService) gin.HandlerFunc {
 		err := c.ShouldBindJSON(&input)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})
+			c.Abort()
+
 			return
 		}
 		user, ok := c.MustGet("User").(models.User)
 		if ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
+			c.Abort()
+
 			return
 		}
 		if !helpers.CompareHashedPasswordWithPlaintext(user.Password, input.Password) {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid password", "status": http.StatusUnauthorized})
+			c.Abort()
+
 			return
 		}
 		c.Next()
@@ -121,19 +140,25 @@ func ConfirmThatUserHasID(userService services.IUserService) gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+			c.Abort()
+
 			return
 		}
 		user, ok := c.MustGet("User").(models.User)
 		if ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
+			c.Abort()
+
 			return
 		}
-		if user.Role == library_contants.ROLE_ADMIN {
+		if user.Role == library_constants.ROLE_ADMIN {
 			c.Next()
 			return
 		}
 		if user.ID != uint(id) {
 			c.JSON(http.StatusForbidden, gin.H{"message": "your role is not authorized to access this resource", "status": http.StatusForbidden})
+			c.Abort()
+
 			return
 		}
 

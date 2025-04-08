@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
-	"victorubere/library/lib/library_contants"
+	"victorubere/library/lib/library_constants"
 	"victorubere/library/lib/structs"
 	"victorubere/library/middlewares"
 	"victorubere/library/models"
@@ -15,8 +15,8 @@ import (
 func (c *Controller) UserController(rg *gin.RouterGroup) {
 	usersRoutes := rg.Group("/users")
 	{
-		usersRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetAllUsers)
-		usersRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.RegisterUser)
+		usersRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.GetAllUsers)
+		usersRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.RegisterUser)
 		usersRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetUserById)
 		usersRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.UpdateUser)
 		usersRoutes.DELETE("/:id",  middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.DeleteUser)

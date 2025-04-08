@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
-	"victorubere/library/lib/library_contants"
+	"victorubere/library/lib/library_constants"
 	"victorubere/library/lib/structs"
 	"victorubere/library/middlewares"
 	"victorubere/library/models"
@@ -16,10 +16,10 @@ func (c *Controller) VisitationController(rg *gin.RouterGroup) {
 	visitationsRoutes := rg.Group("/visitations")
 	{
 		visitationsRoutes.GET("",  middlewares.ValidateJWT(c.userService), c.GetAllVisitation)
-		visitationsRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateVisitation)
+		visitationsRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateVisitation)
 		visitationsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetVisitationById)
-		visitationsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateVisitation)
-		visitationsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService),c.DeleteVisitation)
+		visitationsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.UpdateVisitation)
+		visitationsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService),c.DeleteVisitation)
 	}
 }
 

@@ -1,4 +1,4 @@
-package library_contants
+package library_constants
 
 const (
 	ASC  string = "ASC"

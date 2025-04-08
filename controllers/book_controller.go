@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
-	"victorubere/library/lib/library_contants"
+	"victorubere/library/lib/library_constants"
 	"victorubere/library/lib/structs"
 	"victorubere/library/middlewares"
 	"victorubere/library/models"
@@ -16,13 +16,13 @@ func (c *Controller) BookController(rg *gin.RouterGroup) {
 	booksRoutes := rg.Group("/books")
 	{
 		booksRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllBooks)
-		booksRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateBook)
+		booksRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateBook)
 		booksRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetBookById)
-		booksRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateBook)
-		booksRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.DeleteBook)
+		booksRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.UpdateBook)
+		booksRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.DeleteBook)
 		summaryRoutes := booksRoutes.Group("/summary")
-		summaryRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetBookSummaryDTO)
-		summaryRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetBooksSummaryDTO)
+		summaryRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.GetBookSummaryDTO)
+		summaryRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.GetBooksSummaryDTO)
 	}
 }
 

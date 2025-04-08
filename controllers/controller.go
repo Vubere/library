@@ -48,6 +48,7 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 	c.VisitationController(v1)
 	c.BorrowedController(v1)
 	c.BookReadssController(v1)
+	c.AuthController(v1)
 
 	return router, nil
 }
