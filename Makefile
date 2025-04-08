@@ -57,7 +57,7 @@ migrate/fix:confirm
 # ==================================================================================== #
 ## audit: tidy dependencies and format, vet and test all code
 .PHONY: audit
-audit:format vendor
+audit:vendor format
 	@echo 'Vetting code...'
 	go vet ./...
 	@echo 'Running tests...'

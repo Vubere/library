@@ -19,8 +19,8 @@ func (c *Controller) UserController(rg *gin.RouterGroup) {
 		usersRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.RegisterUser)
 		usersRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetUserById)
 		usersRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.UpdateUser)
-		usersRoutes.DELETE("/:id",  middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.DeleteUser)
-		usersRoutes.GET("/summary/:id",  middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), c.UserSummary)
+		usersRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.DeleteUser)
+		usersRoutes.GET("/summary/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), c.UserSummary)
 	}
 }
 

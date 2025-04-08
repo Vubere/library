@@ -29,7 +29,7 @@ func (c *Controller) LoginUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})
 		return
 	}
-	
+
 	user, err := c.userService.GetUserByEmail(input.Email)
 	if err != nil {
 		if err.Error() == "record not found" {

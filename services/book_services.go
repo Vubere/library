@@ -61,7 +61,7 @@ func (b *BookService) GetBookSummaryDTO(id int, visitationService IVisitationSer
 	if err != nil {
 		if err.Error() == "record not found" {
 			readMostByUser = structs.BookReadMostByUserDTO{}
-		}	else {
+		} else {
 			return structs.BookSummaryDTO{}, err
 		}
 	}
@@ -69,7 +69,7 @@ func (b *BookService) GetBookSummaryDTO(id int, visitationService IVisitationSer
 	if err != nil {
 		if err.Error() == "record not found" {
 			readMostByUser = structs.BookReadMostByUserDTO{}
-		}	else {
+		} else {
 			return structs.BookSummaryDTO{}, err
 		}
 	}
@@ -82,11 +82,11 @@ func (b *BookService) GetBookSummaryDTO(id int, visitationService IVisitationSer
 		readMostByUserPointer = &readMostByUser
 	}
 	return structs.BookSummaryDTO{
-		BookDetails:           book,
-		ReadsCount:            readsCount,
-		BorrowedsCount:        borrowedsCount,
-		ReadMostByUser:        readMostByUserPointer,
-		BorrowedMostByUser: 	 borrowedMostByUserPointer,
+		BookDetails:        book,
+		ReadsCount:         readsCount,
+		BorrowedsCount:     borrowedsCount,
+		ReadMostByUser:     readMostByUserPointer,
+		BorrowedMostByUser: borrowedMostByUserPointer,
 	}, nil
 }
 

@@ -88,7 +88,7 @@ func ValidatePasswordPlaintext(password string) error {
 	return nil
 }
 
-func ValidateEmail (email string) error {
+func ValidateEmail(email string) error {
 	if email == "" {
 		return errors.New("email must be provided")
 	}
@@ -108,7 +108,7 @@ func CheckThatUserHasValidValues(user models.User) error {
 	}
 
 	if err := ValidatePasswordPlaintext(user.Password); err != nil {
-		return	err
+		return err
 	}
 	return nil
 }

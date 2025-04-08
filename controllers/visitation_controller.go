@@ -15,11 +15,11 @@ import (
 func (c *Controller) VisitationController(rg *gin.RouterGroup) {
 	visitationsRoutes := rg.Group("/visitations")
 	{
-		visitationsRoutes.GET("",  middlewares.ValidateJWT(c.userService), c.GetAllVisitation)
+		visitationsRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllVisitation)
 		visitationsRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateVisitation)
 		visitationsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetVisitationById)
 		visitationsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.UpdateVisitation)
-		visitationsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService),c.DeleteVisitation)
+		visitationsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.DeleteVisitation)
 	}
 }
 

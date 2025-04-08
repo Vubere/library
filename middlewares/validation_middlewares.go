@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 	"victorubere/library/jwt_manager"
 	"victorubere/library/lib/helpers"
 	"victorubere/library/lib/library_constants"
@@ -11,6 +12,7 @@ import (
 	"victorubere/library/services"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 )
 
 func ValidateUserId(userService services.IUserService) gin.HandlerFunc {
@@ -71,7 +73,7 @@ func ValidateUserRole(role string, userService services.IUserService) gin.Handle
 		if role != user.Role {
 			c.JSON(http.StatusForbidden, gin.H{"message": "your role is not authorized to access this resource", "status": http.StatusForbidden})
 			c.Abort()
-			return 
+			return
 		}
 		c.Next()
 	}
@@ -91,6 +93,12 @@ func ValidateJWT(userService services.IUserService) gin.HandlerFunc {
 		claims, err := jwt_manager.VerifyToken(tokenString)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized", "status": http.StatusUnauthorized})
+			c.Abort()
+			return
+		}
+		//check if the token is expired
+		if claims["exp"].(float64) < float64(time.Now().Unix()) {
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized: token expired", "status": http.StatusUnauthorized})
 			c.Abort()
 			return
 		}
@@ -163,5 +171,20 @@ func ConfirmThatUserHasID(userService services.IUserService) gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func RateLimiter() gin.HandlerFunc {
+	limiter := rate.NewLimiter(1, 3)
+	return func(c *gin.Context) {
+
+		if limiter.Allow() {
+			c.Next()
+		} else {
+			c.JSON(http.StatusTooManyRequests, gin.H{
+				"message": "Limite exceed",
+			})
+		}
+
 	}
 }

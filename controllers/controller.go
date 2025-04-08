@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"net/http"
-
-	"victorubere/library/services"
+	"victorubere/library/middlewares"
 
 	"github.com/gin-gonic/gin"
+	"victorubere/library/services"
 )
 
 type Controller struct {
@@ -41,7 +41,13 @@ func (c *Controller) InitializeRoutes() (*gin.Engine, error) {
 		ctx.Header("Access-Control-Allow-Credentials", "true")
 		ctx.AbortWithStatus(http.StatusNoContent)
 	})
-
+	router.Use(func(ctx *gin.Context) {
+		ctx.Header("Access-Control-Allow-Origin", "*")
+		ctx.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		ctx.Header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+		ctx.Header("Access-Control-Allow-Credentials", "true")
+	})
+	router.Use(middlewares.RateLimiter())
 	v1 := router.Group("/api/v1")
 	c.UserController(v1)
 	c.BookController(v1)

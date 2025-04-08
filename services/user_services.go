@@ -121,7 +121,7 @@ func (u *UserService) GetUserSummary(id int, visitationService IVisitationServic
 	if len(mostReadBook) > 0 {
 		topMostReadBook = &mostReadBook[0]
 	}
-	var topMostBorrowedBook *structs.MostBorrowedBookDTO 
+	var topMostBorrowedBook *structs.MostBorrowedBookDTO
 	if mostBorrowedBook.BookBorrowedCount > 0 {
 		topMostBorrowedBook = &mostBorrowedBook
 	}
@@ -134,13 +134,13 @@ func (u *UserService) GetUserSummary(id int, visitationService IVisitationServic
 	if !hasRead {
 		bookReadsCount = 0
 	}
-	
+
 	return structs.UserSummaryDTO{
-		UserDetails:         returnedUser,
-		VisitationsCount:    visitationsCount,
-		BorrowedsCount:      borrowedsCount,
-		BookReadsCount:      bookReadsCount,
-		MostReadBook:        topMostReadBook,
-		MostBorrowedBook: 	 topMostBorrowedBook,
+		UserDetails:      returnedUser,
+		VisitationsCount: visitationsCount,
+		BorrowedsCount:   borrowedsCount,
+		BookReadsCount:   bookReadsCount,
+		MostReadBook:     topMostReadBook,
+		MostBorrowedBook: topMostBorrowedBook,
 	}, nil
 }

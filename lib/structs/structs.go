@@ -83,25 +83,25 @@ type Meta struct {
 }
 
 type UserSummaryDTO struct {
-	UserDetails         models.UserDTO         `json:"user_details"`
-	VisitationsCount    int64               `json:"visitations_count"`
-	BorrowedsCount      int64               `json:"borroweds_count"`
-	BookReadsCount      int64               `json:"book_reads_count"`
-	MostReadBook        *MostBookReadsDTO    `json:"most_read_book"`
-	MostBorrowedBook	  *MostBorrowedBookDTO `json:"most_borrowed_book"`
+	UserDetails      models.UserDTO       `json:"user_details"`
+	VisitationsCount int64                `json:"visitations_count"`
+	BorrowedsCount   int64                `json:"borroweds_count"`
+	BookReadsCount   int64                `json:"book_reads_count"`
+	MostReadBook     *MostBookReadsDTO    `json:"most_read_book"`
+	MostBorrowedBook *MostBorrowedBookDTO `json:"most_borrowed_book"`
 }
 
 type BooksSummaryDTO struct {
-	BooksCount          int64               `json:"books_count"`
-	MostReadBook        *MostBookReadsDTO    `json:"most_read_book"`
+	BooksCount       int64                `json:"books_count"`
+	MostReadBook     *MostBookReadsDTO    `json:"most_read_book"`
 	MostBorrowedBook *MostBorrowedBookDTO `json:"most_borrowed_book"`
 }
 
 type BookSummaryDTO struct {
-	BookDetails           models.Book           `json:"book_details"`
-	ReadsCount            int64                 `json:"reads_count"`
-	BorrowedsCount        int64                 `json:"borroweds_count"`
-	ReadMostByUser        *BookReadMostByUserDTO `json:"read_most_by_user"`
+	BookDetails        models.Book            `json:"book_details"`
+	ReadsCount         int64                  `json:"reads_count"`
+	BorrowedsCount     int64                  `json:"borroweds_count"`
+	ReadMostByUser     *BookReadMostByUserDTO `json:"read_most_by_user"`
 	BorrowedMostByUser *BorrowedMostByUserDTO `json:"borrowed_most_by_user"`
 }
 

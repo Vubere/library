@@ -16,7 +16,7 @@ func (c *Controller) BookReadssController(rg *gin.RouterGroup) {
 	bookReadsRoutes := rg.Group("/book-reads")
 	{
 		bookReadsRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllBookReadss)
-		bookReadsRoutes.POST("", middlewares.ValidateJWT(c.userService),  middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateBookReads)
+		bookReadsRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.CreateBookReads)
 		bookReadsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetBookReadsById)
 		bookReadsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.UpdateBookReads)
 		bookReadsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_constants.ROLE_ADMIN, c.userService), c.DeleteBookReads)
