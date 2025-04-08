@@ -135,7 +135,7 @@ func (r *BookReadsRepository) MostReadBooks(query structs.Query, bookReadQuery s
 
 func (r *BookReadsRepository) UserWithMostBookReads(bookId int, bookReadQuery structs.BookReadsQuery) (structs.BookReadMostByUserDTO, error) {
 	var bookReads structs.BookReadMostByUserDTO
-	startQuery := r.db.Model(&models.BookReads{}).Where ("book_id = ?", bookId)
+	startQuery := r.db.Model(&models.BookReads{}).Where("book_id = ?", bookId)
 
 	if bookReadQuery.VisitationID != 0 {
 		startQuery = startQuery.Where("visitation_id = ?", bookReadQuery.VisitationID)

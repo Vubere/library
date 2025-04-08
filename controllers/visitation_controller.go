@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
+	"victorubere/library/lib/library_contants"
 	"victorubere/library/lib/structs"
+	"victorubere/library/middlewares"
 	"victorubere/library/models"
 
 	"github.com/gin-gonic/gin"
@@ -13,11 +15,11 @@ import (
 func (c *Controller) VisitationController(rg *gin.RouterGroup) {
 	visitationsRoutes := rg.Group("/visitations")
 	{
-		visitationsRoutes.GET("", c.GetAllVisitation)
-		visitationsRoutes.POST("", c.CreateVisitation)
-		visitationsRoutes.GET("/:id", c.GetVisitationById)
-		visitationsRoutes.PUT("/:id", c.UpdateVisitation)
-		visitationsRoutes.DELETE("/:id", c.DeleteVisitation)
+		visitationsRoutes.GET("",  middlewares.ValidateJWT(c.userService), c.GetAllVisitation)
+		visitationsRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateVisitation)
+		visitationsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetVisitationById)
+		visitationsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateVisitation)
+		visitationsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService),c.DeleteVisitation)
 	}
 }
 

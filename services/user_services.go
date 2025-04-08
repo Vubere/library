@@ -55,7 +55,6 @@ func (u *UserService) UpdateUser(user models.User) (models.User, error) {
 	return updatedUser, nil
 }
 
-
 func (u *UserService) GetUserByEmail(email string) (models.User, error) {
 	return u.userRepository.GetByEmail(email)
 }
@@ -81,7 +80,7 @@ func (u *UserService) GetUserSummary(id int, visitationService IVisitationServic
 	if err != nil {
 		return structs.UserSummaryDTO{}, err
 	}
-	mostReadBook, err := bookReadService.GetMostReadBooks(structs.Query{Page:1, PerPage:1}, structs.BookReadsQuery{UserID: id})
+	mostReadBook, err := bookReadService.GetMostReadBooks(structs.Query{Page: 1, PerPage: 1}, structs.BookReadsQuery{UserID: id})
 	if err != nil {
 		return structs.UserSummaryDTO{}, err
 	}
@@ -89,14 +88,13 @@ func (u *UserService) GetUserSummary(id int, visitationService IVisitationServic
 	if err != nil {
 		return structs.UserSummaryDTO{}, err
 	}
-	
+
 	return structs.UserSummaryDTO{
-		UserDetails: user,
-		VisitationsCount: visitationsCount,
-		BorrowedsCount: borrowedsCount,
-		BookReadsCount: bookReadsCount,
-		MostReadBook: mostReadBook[0],
+		UserDetails:         user,
+		VisitationsCount:    visitationsCount,
+		BorrowedsCount:      borrowedsCount,
+		BookReadsCount:      bookReadsCount,
+		MostReadBook:        mostReadBook[0],
 		MostBorrowedBookDTO: mostBorrowedBook,
 	}, nil
 }
-

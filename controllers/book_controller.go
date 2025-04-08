@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
+	"victorubere/library/lib/library_contants"
 	"victorubere/library/lib/structs"
+	"victorubere/library/middlewares"
 	"victorubere/library/models"
 
 	"github.com/gin-gonic/gin"
@@ -13,14 +15,14 @@ import (
 func (c *Controller) BookController(rg *gin.RouterGroup) {
 	booksRoutes := rg.Group("/books")
 	{
-		booksRoutes.GET("", c.GetAllBooks)
-		booksRoutes.POST("", c.CreateBook)
-		booksRoutes.GET("/:id", c.GetBookById)
-		booksRoutes.PUT("/:id", c.UpdateBook)
-		booksRoutes.DELETE("/:id", c.DeleteBook)
+		booksRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllBooks)
+		booksRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateBook)
+		booksRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetBookById)
+		booksRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateBook)
+		booksRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.DeleteBook)
 		summaryRoutes := booksRoutes.Group("/summary")
-		summaryRoutes.GET("/:id", c.GetBookSummaryDTO)
-		summaryRoutes.GET("", c.GetBooksSummaryDTO)
+		summaryRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetBookSummaryDTO)
+		summaryRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetBooksSummaryDTO)
 	}
 }
 

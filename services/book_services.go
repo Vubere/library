@@ -59,26 +59,26 @@ func (b *BookService) GetBookSummaryDTO(id int, visitationService IVisitationSer
 	}
 
 	return structs.BookSummaryDTO{
-		BookDetails: book,
-		ReadsCount: readsCount,
-		BorrowedsCount: borrowedsCount,
-		ReadMostByUser: readMostByUser,
+		BookDetails:           book,
+		ReadsCount:            readsCount,
+		BorrowedsCount:        borrowedsCount,
+		ReadMostByUser:        readMostByUser,
 		BorrowedMostByUserDTO: borrowedMostByUser,
 	}, nil
 }
 
-func (b *BookService) GetBooksSummaryDTO(query structs.Query, bookQuery structs.BookQuery, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService)  (structs.BooksSummaryDTO, error) {
+func (b *BookService) GetBooksSummaryDTO(query structs.Query, bookQuery structs.BookQuery, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.BooksSummaryDTO, error) {
 	var bookSummary structs.BooksSummaryDTO
 	var err error
 	bookSummary.BooksCount, err = b.GetTotalBooks(structs.BookQuery{})
 	if err != nil {
 		return structs.BooksSummaryDTO{}, err
 	}
-	mostRead, err := bookReadService.GetMostReadBooks(structs.Query{Page:1, PerPage:1}, structs.BookReadsQuery{})
+	mostRead, err := bookReadService.GetMostReadBooks(structs.Query{Page: 1, PerPage: 1}, structs.BookReadsQuery{})
 	if err != nil {
 		if err.Error() == "record not found" {
 			bookSummary.MostReadBook = structs.MostBookReadsDTO{}
-		}else{
+		} else {
 			return structs.BooksSummaryDTO{}, err
 		}
 	}
@@ -87,7 +87,7 @@ func (b *BookService) GetBooksSummaryDTO(query structs.Query, bookQuery structs.
 	if err != nil {
 		if err.Error() == "record not found" {
 			bookSummary.MostBorrowedBookDTO = structs.MostBorrowedBookDTO{}
-		}else{
+		} else {
 			return structs.BooksSummaryDTO{}, err
 		}
 	}

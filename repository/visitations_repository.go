@@ -45,7 +45,7 @@ func (v *VisitationRepository) List(query structs.Query, visitationQuery structs
 		startQuery = startQuery.Where("duration = ?", visitationQuery.Duration)
 	}
 	startQuery = startQuery.Select("visitations.*, visitations.id as id").Joins("LEFT JOIN users ON users.id = visitations.user_id")
-	err := startQuery.Preload("User").Limit(query.PerPage).Offset(offset).Find(&visitations).Error	
+	err := startQuery.Preload("User").Limit(query.PerPage).Offset(offset).Find(&visitations).Error
 	if err != nil {
 		return []models.Visitation{}, count, err
 	}

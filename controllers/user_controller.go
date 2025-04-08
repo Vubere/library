@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 	"victorubere/library/lib/helpers"
+	"victorubere/library/lib/library_contants"
 	"victorubere/library/lib/structs"
+	"victorubere/library/middlewares"
 	"victorubere/library/models"
 
 	"github.com/gin-gonic/gin"
@@ -13,12 +15,12 @@ import (
 func (c *Controller) UserController(rg *gin.RouterGroup) {
 	usersRoutes := rg.Group("/users")
 	{
-		usersRoutes.GET("", c.GetAllUsers)
-		usersRoutes.POST("", c.RegisterUser)
-		usersRoutes.GET("/:id", c.GetUserById)
-		usersRoutes.PUT("/:id", c.UpdateUser)
-		usersRoutes.DELETE("/:id", c.DeleteUser)
-		usersRoutes.GET("/summary/:id", c.UserSummaryDTO)
+		usersRoutes.GET("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.GetAllUsers)
+		usersRoutes.POST("", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.RegisterUser)
+		usersRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetUserById)
+		usersRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.UpdateUser)
+		usersRoutes.DELETE("/:id",  middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), middlewares.ConfirmThatUserHasID(c.userService), c.DeleteUser)
+		usersRoutes.GET("/summary/:id",  middlewares.ValidateJWT(c.userService), middlewares.ValidateUserId(c.userService), c.UserSummary)
 	}
 }
 
@@ -131,7 +133,7 @@ func (c *Controller) DeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "user deleted", "status": http.StatusOK})
 }
 
-func (c *Controller) UserSummaryDTO(ctx *gin.Context) {
+func (c *Controller) UserSummary(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})

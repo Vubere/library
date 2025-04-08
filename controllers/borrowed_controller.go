@@ -5,7 +5,9 @@ import (
 	"strconv"
 	"strings"
 	"victorubere/library/lib/helpers"
+	"victorubere/library/lib/library_contants"
 	"victorubere/library/lib/structs"
+	"victorubere/library/middlewares"
 	"victorubere/library/models"
 
 	"github.com/gin-gonic/gin"
@@ -14,11 +16,11 @@ import (
 func (c *Controller) BorrowedController(rg *gin.RouterGroup) {
 	borrowedsRoutes := rg.Group("/borroweds")
 	{
-		borrowedsRoutes.GET("", c.GetAllBorroweds)
-		borrowedsRoutes.POST("", c.CreateBorrowed)
-		borrowedsRoutes.GET("/:id", c.GetBorrowedById)
-		borrowedsRoutes.PUT("/:id", c.UpdateBorrowed)
-		borrowedsRoutes.DELETE("/:id", c.DeleteBorrowed)
+		borrowedsRoutes.GET("", middlewares.ValidateJWT(c.userService), c.GetAllBorroweds)
+		borrowedsRoutes.POST("", middlewares.ValidateJWT(c.userService),middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.CreateBorrowed)
+		borrowedsRoutes.GET("/:id", middlewares.ValidateJWT(c.userService), c.GetBorrowedById)
+		borrowedsRoutes.PUT("/:id", middlewares.ValidateJWT(c.userService),middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.UpdateBorrowed)
+		borrowedsRoutes.DELETE("/:id", middlewares.ValidateJWT(c.userService),middlewares.ValidateUserRole(library_contants.ROLE_ADMIN, c.userService), c.DeleteBorrowed)
 	}
 }
 

@@ -141,7 +141,7 @@ func (r *BorrowedRepository) MostBorrowedBooks(borrowedQuery structs.BorrowedQue
 		startQuery = startQuery.Where("borroweds.returned_at <= ?", borrowedQuery.ReturnedAtEnd)
 	}
 	startQuery = startQuery.Joins("LEFT JOIN books on books.id = borroweds.book_id").Select("count(borroweds.book_id) as book_borrowing_count, borroweds.book_id as book_id, books.title as book_title, books.author as book_author, books.isbn as book_isbn, books.publisher as book_publisher, books.publication_date as book_publication_date").Group("book_id").Order("book_borrowing_count desc")
-	
+
 	err := startQuery.Find(&borroweds).Error
 	if err != nil {
 		return structs.MostBorrowedBookDTO{}, err
@@ -151,7 +151,7 @@ func (r *BorrowedRepository) MostBorrowedBooks(borrowedQuery structs.BorrowedQue
 
 func (r *BorrowedRepository) UserWhoBorrowedBookMost(bookId int, borrowedQuery structs.BorrowedQuery) (structs.BorrowedMostByUserDTO, error) {
 	var borroweds structs.BorrowedMostByUserDTO
-	startQuery := r.db.Model(&models.Borrowed{}).Where ("book_id = ?", bookId)
+	startQuery := r.db.Model(&models.Borrowed{}).Where("book_id = ?", bookId)
 
 	if borrowedQuery.UserID != 0 {
 		startQuery = startQuery.Where("borroweds.user_id = ?", borrowedQuery.UserID)

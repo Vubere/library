@@ -10,7 +10,7 @@ type BookReads struct {
 	BookID       uint           `json:"book_id"`
 	VisitationID uint           `json:"visitation_id"`
 	Duration     types.Duration `json:"duration"`
-	User				User					`json:"user"`
-	Visitation		Visitation			`json:"visitation"`
-	Book					Book					`json:"book"`
+	User         User           `json:"user"`
+	Visitation   Visitation     `json:"visitation"`
+	Book         Book           `json:"book"`
 }

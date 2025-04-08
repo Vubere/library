@@ -54,4 +54,3 @@ type IBookReadsRepository interface {
 	MostReadBooks(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]structs.MostBookReadsDTO, error)
 	UserWithMostBookReads(bookId int, bookReadQuery structs.BookReadsQuery) (structs.BookReadMostByUserDTO, error)
 }
-

@@ -66,7 +66,7 @@ func (v *VisitationService) UpdateVisitation(visitation models.Visitation, UserS
 }
 
 func (v *VisitationService) DeleteVisitation(id int) error {
-	if _,err:=v.GetVisitationById(id);err!=nil{
+	if _, err := v.GetVisitationById(id); err != nil {
 		return err
 	}
 	err := v.repository.Delete(id)
@@ -76,7 +76,7 @@ func (v *VisitationService) DeleteVisitation(id int) error {
 	return nil
 }
 
-func (v *VisitationService)	GetTotalVisitations(visitationQuery structs.VisitationQuery) (int64, error) {
+func (v *VisitationService) GetTotalVisitations(visitationQuery structs.VisitationQuery) (int64, error) {
 	totalVisitations, err := v.repository.TotalVisitations(visitationQuery)
 	if err != nil {
 		return 0, err
