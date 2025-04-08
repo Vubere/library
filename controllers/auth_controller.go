@@ -52,8 +52,18 @@ func (c *Controller) LoginUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
+	var returnedUser models.UserDTO
+	returnedUser.ID = user.ID
+	returnedUser.CreatedAt = &user.CreatedAt
+	returnedUser.UpdatedAt = &user.UpdatedAt
+	returnedUser.Name = user.Name
+	returnedUser.Email = user.Email
+	returnedUser.PhoneNumber = user.PhoneNumber
+	returnedUser.Address = user.Address
+	returnedUser.Gender = user.Gender
+	returnedUser.Role = user.Role
 	ctx.JSON(http.StatusOK, gin.H{
-		"user":    user,
+		"user":    returnedUser,
 		"token":   token,
 		"message": "login successful",
 		"status":  http.StatusOK,
@@ -104,8 +114,18 @@ func (c *Controller) UserRegistration(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
+	var returnedUser models.UserDTO
+	returnedUser.ID = user.ID
+	returnedUser.CreatedAt = &user.CreatedAt
+	returnedUser.UpdatedAt = &user.UpdatedAt
+	returnedUser.Name = user.Name
+	returnedUser.Email = user.Email
+	returnedUser.PhoneNumber = user.PhoneNumber
+	returnedUser.Address = user.Address
+	returnedUser.Gender = user.Gender
+	returnedUser.Role = user.Role
 	ctx.JSON(http.StatusCreated, gin.H{
-		"user":    user,
+		"user":    returnedUser,
 		"token":   token,
 		"message": "user created",
 		"status":  http.StatusCreated,

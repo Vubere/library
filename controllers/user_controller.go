@@ -61,8 +61,18 @@ func (c *Controller) RegisterUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
 		return
 	}
+	var returnedUser models.UserDTO
+	returnedUser.ID = createdUser.ID
+	returnedUser.CreatedAt = &createdUser.CreatedAt
+	returnedUser.UpdatedAt = &createdUser.UpdatedAt
+	returnedUser.Name = createdUser.Name
+	returnedUser.Email = createdUser.Email
+	returnedUser.PhoneNumber = createdUser.PhoneNumber
+	returnedUser.Address = createdUser.Address
+	returnedUser.Gender = createdUser.Gender
+	returnedUser.Role = createdUser.Role
 	ctx.JSON(http.StatusOK, gin.H{
-		"user":    createdUser,
+		"user":    returnedUser,
 		"token":   "",
 		"message": "user created",
 		"status":  http.StatusOK,
@@ -77,43 +87,59 @@ func (c *Controller) GetUserById(ctx *gin.Context) {
 	}
 	user, err := c.userService.GetUserById(id)
 	if err != nil {
+		if err.Error() == "record not found" {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "user not found"})
+			return
+		}
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "error",
 			"error":   err.Error(),
 		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"user": user})
+	var returnedUser models.UserDTO
+	returnedUser.ID = user.ID
+	returnedUser.CreatedAt = &user.CreatedAt
+	returnedUser.UpdatedAt = &user.UpdatedAt
+	returnedUser.Name = user.Name
+	returnedUser.Email = user.Email
+	returnedUser.PhoneNumber = user.PhoneNumber
+	returnedUser.Address = user.Address
+	returnedUser.Gender = user.Gender
+	returnedUser.Role = user.Role
+	ctx.JSON(http.StatusOK, gin.H{"user": returnedUser, "status": http.StatusOK, "message": "success"})
 }
 
 func (c *Controller) UpdateUser(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+	user, ok := ctx.MustGet("User").(models.User)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
 		return
 	}
-	user, err := c.userService.GetUserById(id)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"status":  http.StatusBadRequest,
-			"message": "failed",
-			"error":   err.Error(),
-		})
+	if user.Role != library_constants.ROLE_USER && user.Role != library_constants.ROLE_ADMIN {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid user role", "status": http.StatusBadRequest})
 		return
 	}
-
-	err = ctx.BindJSON(&user)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
-		return
+	if user.Password != "" {
+		user.Password = ""
 	}
 	updatedUser, err := c.userService.UpdateUser(user)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update user"})
 		return
 	}
+	var returnedUser models.UserDTO
+	returnedUser.ID = updatedUser.ID
+	returnedUser.CreatedAt = &updatedUser.CreatedAt
+	returnedUser.UpdatedAt = &updatedUser.UpdatedAt
+	returnedUser.Name = updatedUser.Name
+	returnedUser.Email = updatedUser.Email
+	returnedUser.PhoneNumber = updatedUser.PhoneNumber
+	returnedUser.Address = updatedUser.Address
+	returnedUser.Gender = updatedUser.Gender
+	returnedUser.Role = updatedUser.Role
 	ctx.JSON(http.StatusOK, gin.H{
-		"user":    updatedUser,
+		"user":    returnedUser,
 		"status":  http.StatusOK,
 		"message": "success",
 	})

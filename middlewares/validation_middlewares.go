@@ -119,7 +119,7 @@ func ValidateUserPassword(userService services.IUserService) gin.HandlerFunc {
 			return
 		}
 		user, ok := c.MustGet("User").(models.User)
-		if ok {
+		if !ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
 			c.Abort()
 
@@ -145,7 +145,7 @@ func ConfirmThatUserHasID(userService services.IUserService) gin.HandlerFunc {
 			return
 		}
 		user, ok := c.MustGet("User").(models.User)
-		if ok {
+		if !ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": "something went wrong on the server"})
 			c.Abort()
 

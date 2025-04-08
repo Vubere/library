@@ -65,36 +65,82 @@ func (u *UserService) GetTotalUsers(userDetailsQuery structs.UserQuery) (int64, 
 
 func (u *UserService) GetUserSummary(id int, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.UserSummaryDTO, error) {
 	user, err := u.GetUserById(id)
+	var returnedUser models.UserDTO
+	returnedUser.ID = user.ID
+	returnedUser.Email = user.Email
+	returnedUser.PhoneNumber = user.PhoneNumber
+	returnedUser.Gender = user.Email
+	var hasVisited bool = false
+	var hasBorrowed bool = false
+	var hasRead bool = false
 	if err != nil {
 		return structs.UserSummaryDTO{}, err
 	}
 	visitationsCount, err := visitationService.GetTotalVisitations(structs.VisitationQuery{UserID: id})
 	if err != nil {
-		return structs.UserSummaryDTO{}, err
+		if err.Error() == "record not found" {
+			hasVisited = false
+		} else {
+			return structs.UserSummaryDTO{}, err
+		}
 	}
 	borrowedsCount, err := borrowedService.GetTotalBorrowings(structs.BorrowedQuery{UserID: id})
 	if err != nil {
-		return structs.UserSummaryDTO{}, err
+		if err.Error() == "record not found" {
+			hasBorrowed = false
+		} else {
+			return structs.UserSummaryDTO{}, err
+		}
 	}
 	bookReadsCount, err := bookReadService.GetTotalBookReads(structs.BookReadsQuery{UserID: id})
 	if err != nil {
-		return structs.UserSummaryDTO{}, err
+		if err.Error() == "record not found" {
+			hasRead = false
+		} else {
+			return structs.UserSummaryDTO{}, err
+		}
 	}
 	mostReadBook, err := bookReadService.GetMostReadBooks(structs.Query{Page: 1, PerPage: 1}, structs.BookReadsQuery{UserID: id})
 	if err != nil {
-		return structs.UserSummaryDTO{}, err
+		if err.Error() == "record not found" {
+			hasRead = false
+		} else {
+			return structs.UserSummaryDTO{}, err
+		}
 	}
 	mostBorrowedBook, err := borrowedService.GetMostBorrowedBooks(structs.BorrowedQuery{UserID: id})
 	if err != nil {
+		if err.Error() == "record not found" {
+			hasBorrowed = false
+		} else {
+			return structs.UserSummaryDTO{}, err
+		}
 		return structs.UserSummaryDTO{}, err
 	}
-
+	var topMostReadBook *structs.MostBookReadsDTO
+	if len(mostReadBook) > 0 {
+		topMostReadBook = &mostReadBook[0]
+	}
+	var topMostBorrowedBook *structs.MostBorrowedBookDTO 
+	if mostBorrowedBook.BookBorrowedCount > 0 {
+		topMostBorrowedBook = &mostBorrowedBook
+	}
+	if !hasVisited {
+		visitationsCount = 0
+	}
+	if !hasBorrowed {
+		borrowedsCount = 0
+	}
+	if !hasRead {
+		bookReadsCount = 0
+	}
+	
 	return structs.UserSummaryDTO{
-		UserDetails:         user,
+		UserDetails:         returnedUser,
 		VisitationsCount:    visitationsCount,
 		BorrowedsCount:      borrowedsCount,
 		BookReadsCount:      bookReadsCount,
-		MostReadBook:        mostReadBook[0],
-		MostBorrowedBookDTO: mostBorrowedBook,
+		MostReadBook:        topMostReadBook,
+		MostBorrowedBook: 	 topMostBorrowedBook,
 	}, nil
 }
