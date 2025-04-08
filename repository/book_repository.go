@@ -57,7 +57,11 @@ func (b *BookRepository) List(query structs.Query, bookQuery structs.BookQuery) 
 		timeYearsAgo := time.Now().AddDate(-bookQuery.BookYearsOld, 0, 0)
 		dbExec = dbExec.Where("publication_date >= ?", timeYearsAgo)
 	}
-	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&books).Count(&count).Error
+	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&books).Error
+	if err != nil {
+		return []models.Book{}, 0, err
+	}
+	err = dbExec.Model(&books).Count(&count).Error
 	if err != nil {
 		return []models.Book{}, 0, err
 	}
@@ -84,4 +88,38 @@ func (b *BookRepository) Update(book models.Book) (models.Book, error) {
 
 func (b *BookRepository) Delete(id int) error {
 	return b.db.Delete(&models.Book{}, id).Error
+}
+
+func (b *BookRepository) TotalBooks(bookQuery structs.BookQuery) (int64, error) {
+	var count int64
+	startQuery := b.db.Model(&models.Book{})
+	if bookQuery.Title != "" {
+		startQuery = startQuery.Where("title LIKE ?", "%"+bookQuery.Title+"%")
+	}
+	if bookQuery.Author != "" {
+		startQuery = startQuery.Where("author LIKE ?", "%"+bookQuery.Author+"%")
+	}
+	if bookQuery.Genre != "" {
+		startQuery = startQuery.Where("genre = ?", bookQuery.Genre)
+	}
+	if bookQuery.ISBN != "" {
+		startQuery = startQuery.Where("isbn = ?", bookQuery.ISBN)
+	}
+	if bookQuery.Publisher != "" {
+		startQuery = startQuery.Where("publisher = ?", bookQuery.Publisher)
+	}
+	if bookQuery.Year != 0 {
+		firstDayOfYear := time.Date(bookQuery.Year, time.January, 1, 0, 0, 0, 0, time.UTC)
+		lastDayOfYear := time.Date(bookQuery.Year, time.December, 31, 23, 59, 59, 0, time.UTC)
+		startQuery = startQuery.Where("publication_date BETWEEN ? AND ?", firstDayOfYear, lastDayOfYear)
+	}
+	if bookQuery.BookYearsOld != 0 {
+		timeYearsAgo := time.Now().AddDate(-bookQuery.BookYearsOld, 0, 0)
+		startQuery = startQuery.Where("publication_date >= ?", timeYearsAgo)
+	}
+	err := startQuery.Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

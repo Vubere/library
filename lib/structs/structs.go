@@ -2,6 +2,7 @@ package structs
 
 import (
 	"time"
+	"victorubere/library/models"
 )
 
 type Pagination struct {
@@ -73,11 +74,6 @@ type BorrowedQuery struct {
 	ReturnedAtEnd   time.Time `form:"returned_at_end"`
 }
 
-type Model struct {
-	ID        uint      `gorm:"primarykey" json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
 
 type Meta struct {
 	TotalRecords      int64 `json:"total_records"`
@@ -85,4 +81,69 @@ type Meta struct {
 	PerPage           int   `json:"per_page"`
 	NextPage          int   `json:"next_page"`
 	NextPageAvailable bool  `json:"next_page_available"`
+}
+
+type UserSummaryDTO struct {
+	UserDetails models.User `json:"user_details"`
+	VisitationsCount int64 `json:"visitations_count"`
+	BorrowedsCount int64 `json:"borroweds_count"`
+	BookReadsCount int64 `json:"book_reads_count"`
+	MostReadBook MostBookReadsDTO `json:"most_read_book"`
+	MostBorrowedBookDTO MostBorrowedBookDTO `json:"most_borrowed_book"`
+}
+
+type BooksSummaryDTO struct {
+	BooksCount int64 `json:"books_count"`
+	MostReadBook MostBookReadsDTO `json:"most_read_book"`
+	MostBorrowedBookDTO MostBorrowedBookDTO `json:"most_borrowed_book"`
+}
+
+type BookSummaryDTO struct {
+	BookDetails models.Book `json:"book_details"`
+	ReadsCount int64 `json:"reads_count"`
+	BorrowedsCount int64 `json:"borroweds_count"`
+	ReadMostByUser BookReadMostByUserDTO `json:"read_most_by_user"`
+	BorrowedMostByUserDTO BorrowedMostByUserDTO `json:"borrowed_most_by_user"`
+}
+
+type MostBookReadsDTO struct {
+	BookReadsCount int `json:"book_reads_count"`
+	BookID int `json:"book_id"`
+	BookTitle string `json:"book_title"`
+	BookAuthor string `json:"book_author"`
+	BookGenre string `json:"book_genre"`
+	BookISBN string `json:"book_isbn"`
+	BookPublisher string `json:"book_publisher"`
+	BookPublicationDate string `json:"book_publication_date"`
+	BookYear int `json:"book_year"`
+}
+
+type MostBorrowedBookDTO struct {
+	BookBorrowedCount int `json:"book_borrowing_count"`
+	BookID int `json:"book_id"`
+	BookTitle string `json:"book_title"`
+	BookAuthor string `json:"book_author"`
+	BookGenre string `json:"book_genre"`
+	BookISBN string `json:"book_isbn"`
+	BookPublisher string `json:"book_publisher"`
+	BookPublicationDate string `json:"book_publication_date"`
+	BookYear int `json:"book_year"`
+}
+
+type BookReadMostByUserDTO struct {
+	BookReadsCount int `json:"book_reads_count"`
+	UserID int `json:"user_id"`
+	UserName string `json:"user_name"`
+	UserGender string `json:"user_gender"`
+	UserDateOfBirth string `json:"user_date_of_birth"`	
+	UserEmail string `json:"user_email"`
+}
+
+type BorrowedMostByUserDTO struct {
+	UserBorrowingCount int `json:"user_borrowing_count"`
+	UserID int `json:"user_id"`
+	UserName string `json:"user_name"`
+	UserGender string `json:"user_gender"`
+	UserDateOfBirth string `json:"user_date_of_birth"`
+	UserEmail string `json:"user_email"`
 }

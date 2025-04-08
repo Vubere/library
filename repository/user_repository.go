@@ -59,7 +59,11 @@ func (u *UserRepository) List(query structs.Query, userDetailsQuery structs.User
 	if query.SortBy != "" && query.SortDirection != "" {
 		dbExec = dbExec.Order(query.SortBy + " " + query.SortDirection)
 	}
-	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&users).Count(&count).Error
+	err := dbExec.Limit(query.PerPage).Offset(offset).Find(&users).Error
+	if err != nil {
+		return []models.User{}, 0, err
+	}
+	err = dbExec.Model(&users).Count(&count).Error
 	if err != nil {
 		return []models.User{}, 0, err
 	}
@@ -95,4 +99,35 @@ func (u *UserRepository) GetByEmail(email string) (models.User, error) {
 		return models.User{}, err
 	}
 	return user, nil
+}
+
+func (u *UserRepository) TotalUsers(userDetailsQuery structs.UserQuery) (int64, error) {
+	var count int64
+	startQuery := u.db.Model(&models.User{})
+	if userDetailsQuery.Email != "" {
+		startQuery = startQuery.Where("email LIKE ?", "%"+userDetailsQuery.Email+"%")
+	}
+	if userDetailsQuery.Name != "" {
+		startQuery = startQuery.Where("name LIKE ?", "%"+userDetailsQuery.Name+"%")
+	}
+	if userDetailsQuery.Gender != "" {
+		startQuery = startQuery.Where("gender = ?", userDetailsQuery.Gender)
+	}
+	if userDetailsQuery.DateCreatedStart != "" {
+		dateCreatedStart, _ := time.Parse("2006-01-02", userDetailsQuery.DateCreatedStart)
+		startQuery = startQuery.Where("created_at >= ?", dateCreatedStart)
+	}
+	if userDetailsQuery.DateCreatedEnd != "" {
+		dateCreatedEnd, _ := time.Parse("2006-01-02", userDetailsQuery.DateCreatedEnd)
+		startQuery = startQuery.Where("created_at <= ?", dateCreatedEnd)
+	}
+	if userDetailsQuery.MinAge != 0 {
+		age := time.Now().AddDate(-userDetailsQuery.MinAge, 0, 0)
+		startQuery = startQuery.Where("date_of_birth <= ?", age)
+	}
+	err := startQuery.Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

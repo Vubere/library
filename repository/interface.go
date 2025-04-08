@@ -12,6 +12,7 @@ type IUserRepository interface {
 	Update(user models.User) (models.User, error)
 	Delete(id int) error
 	GetByEmail(email string) (models.User, error)
+	TotalUsers(userDetailsQuery structs.UserQuery) (int64, error)
 }
 
 type IBookRepository interface {
@@ -20,6 +21,7 @@ type IBookRepository interface {
 	Create(book models.Book) (models.Book, error)
 	Update(book models.Book) (models.Book, error)
 	Delete(id int) error
+	TotalBooks(bookQuery structs.BookQuery) (int64, error)
 }
 
 type IVisitationRepository interface {
@@ -28,6 +30,7 @@ type IVisitationRepository interface {
 	Create(visitation models.Visitation) (models.Visitation, error)
 	Update(visitation models.Visitation) (models.Visitation, error)
 	Delete(id int) error
+	TotalVisitations(visitationQuery structs.VisitationQuery) (int64, error)
 }
 
 type IBorrowedRepository interface {
@@ -36,12 +39,19 @@ type IBorrowedRepository interface {
 	Create(borrowed models.Borrowed) (models.Borrowed, error)
 	Update(borrowed models.Borrowed) (models.Borrowed, error)
 	Delete(id int) error
+	TotalBorrowings(borrowedQuery structs.BorrowedQuery) (int64, error)
+	MostBorrowedBooks(borrowedQuery structs.BorrowedQuery) (structs.MostBorrowedBookDTO, error)
+	UserWhoBorrowedBookMost(bookId int, borrowedQuery structs.BorrowedQuery) (structs.BorrowedMostByUserDTO, error)
 }
 
-type IBookReadssRepository interface {
+type IBookReadsRepository interface {
 	GetById(id int) (models.BookReads, error)
 	List(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]models.BookReads, int64, error)
 	Create(bookRead models.BookReads) (models.BookReads, error)
 	Update(bookRead models.BookReads) (models.BookReads, error)
 	Delete(id int) error
+	TotalBookReads(bookReadQuery structs.BookReadsQuery) (int64, error)
+	MostReadBooks(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]structs.MostBookReadsDTO, error)
+	UserWithMostBookReads(bookId int, bookReadQuery structs.BookReadsQuery) (structs.BookReadMostByUserDTO, error)
 }
+

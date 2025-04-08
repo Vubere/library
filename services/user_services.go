@@ -59,3 +59,44 @@ func (u *UserService) UpdateUser(user models.User) (models.User, error) {
 func (u *UserService) GetUserByEmail(email string) (models.User, error) {
 	return u.userRepository.GetByEmail(email)
 }
+
+func (u *UserService) GetTotalUsers(userDetailsQuery structs.UserQuery) (int64, error) {
+	return u.userRepository.TotalUsers(userDetailsQuery)
+}
+
+func (u *UserService) GetUserSummary(id int, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.UserSummaryDTO, error) {
+	user, err := u.GetUserById(id)
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	visitationsCount, err := visitationService.GetTotalVisitations(structs.VisitationQuery{UserID: id})
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	borrowedsCount, err := borrowedService.GetTotalBorrowings(structs.BorrowedQuery{UserID: id})
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	bookReadsCount, err := bookReadService.GetTotalBookReads(structs.BookReadsQuery{UserID: id})
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	mostReadBook, err := bookReadService.GetMostReadBooks(structs.Query{Page:1, PerPage:1}, structs.BookReadsQuery{UserID: id})
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	mostBorrowedBook, err := borrowedService.GetMostBorrowedBooks(structs.BorrowedQuery{UserID: id})
+	if err != nil {
+		return structs.UserSummaryDTO{}, err
+	}
+	
+	return structs.UserSummaryDTO{
+		UserDetails: user,
+		VisitationsCount: visitationsCount,
+		BorrowedsCount: borrowedsCount,
+		BookReadsCount: bookReadsCount,
+		MostReadBook: mostReadBook[0],
+		MostBorrowedBookDTO: mostBorrowedBook,
+	}, nil
+}
+

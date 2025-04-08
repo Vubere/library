@@ -18,6 +18,7 @@ func (c *Controller) UserController(rg *gin.RouterGroup) {
 		usersRoutes.GET("/:id", c.GetUserById)
 		usersRoutes.PUT("/:id", c.UpdateUser)
 		usersRoutes.DELETE("/:id", c.DeleteUser)
+		usersRoutes.GET("/summary/:id", c.UserSummaryDTO)
 	}
 }
 
@@ -128,4 +129,27 @@ func (c *Controller) DeleteUser(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "user deleted", "status": http.StatusOK})
+}
+
+func (c *Controller) UserSummaryDTO(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		return
+	}
+	_, err = c.userService.GetUserById(id)
+	if err != nil {
+		if err.Error() == "record not found" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "user not found"})
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+		return
+	}
+	userSummary, err := c.userService.GetUserSummary(id, c.visitationService, c.borrowedService, c.bookReadService)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"user": userSummary, "status": http.StatusOK, "message": "success"})
 }

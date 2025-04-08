@@ -8,10 +8,10 @@ import (
 )
 
 type BookReadsService struct {
-	repository repository.IBookReadssRepository
+	repository repository.IBookReadsRepository
 }
 
-func NewBookReadsService(repository repository.IBookReadssRepository) IBookReadssService {
+func NewBookReadsService(repository repository.IBookReadsRepository) IBookReadsService {
 	return &BookReadsService{
 		repository: repository,
 	}
@@ -105,4 +105,28 @@ func (r *BookReadsService) DeleteBookReads(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (r *BookReadsService) GetTotalBookReads(bookReadQuery structs.BookReadsQuery) (int64, error) {
+	totalBookReads, err := r.repository.TotalBookReads(bookReadQuery)
+	if err != nil {
+		return 0, err
+	}
+	return totalBookReads, nil
+}
+
+func (r *BookReadsService) GetMostReadBooks(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]structs.MostBookReadsDTO, error) {
+	mostReadBooks, err := r.repository.MostReadBooks(query, bookReadQuery)
+	if err != nil {
+		return []structs.MostBookReadsDTO{}, err
+	}
+	return mostReadBooks, nil
+}
+
+func (r *BookReadsService) GetUserWithMostBookReads(bookId int, bookReadQuery structs.BookReadsQuery) (structs.BookReadMostByUserDTO, error) {
+	mostReadBooks, err := r.repository.UserWithMostBookReads(bookId, bookReadQuery)
+	if err != nil {
+		return structs.BookReadMostByUserDTO{}, err
+	}
+	return mostReadBooks, nil
 }

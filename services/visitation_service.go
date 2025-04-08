@@ -75,3 +75,11 @@ func (v *VisitationService) DeleteVisitation(id int) error {
 	}
 	return nil
 }
+
+func (v *VisitationService)	GetTotalVisitations(visitationQuery structs.VisitationQuery) (int64, error) {
+	totalVisitations, err := v.repository.TotalVisitations(visitationQuery)
+	if err != nil {
+		return 0, err
+	}
+	return totalVisitations, nil
+}

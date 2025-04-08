@@ -77,3 +77,25 @@ func (v *VisitationRepository) Update(visitation models.Visitation) (models.Visi
 func (v *VisitationRepository) Delete(id int) error {
 	return v.db.Table("visitations").Where("id = ?", id).Delete(&models.Visitation{}).Error
 }
+
+func (v *VisitationRepository) TotalVisitations(visitationQuery structs.VisitationQuery) (int64, error) {
+	var count int64
+	startQuery := v.db.Model(&models.Visitation{})
+	if visitationQuery.UserID != 0 {
+		startQuery = startQuery.Where("user_id = ?", visitationQuery.UserID)
+	}
+	if visitationQuery.VisitedAtStart.Year() != 1 {
+		startQuery = startQuery.Where("visited_at >= ?", visitationQuery.VisitedAtStart)
+	}
+	if visitationQuery.VisitedAtEnd.Year() != 1 {
+		startQuery = startQuery.Where("visited_at <= ?", visitationQuery.VisitedAtEnd)
+	}
+	if visitationQuery.Duration != 0 {
+		startQuery = startQuery.Where("duration = ?", visitationQuery.Duration)
+	}
+	err := startQuery.Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

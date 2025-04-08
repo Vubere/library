@@ -12,6 +12,9 @@ type IUserService interface {
 	GetAllUsers(query structs.Query, userDetailsQuery structs.UserQuery) ([]models.User, int64, error)
 	DeleteUser(id int) error
 	UpdateUser(User models.User) (models.User, error)
+	GetUserSummary(id int, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.UserSummaryDTO, error)
+	GetUserByEmail(email string) (models.User, error)
+	GetTotalUsers(userDetailsQuery structs.UserQuery) (int64, error)
 }
 
 type IBookService interface {
@@ -20,6 +23,9 @@ type IBookService interface {
 	GetBookById(id int) (models.Book, error)
 	UpdateBook(book models.Book) (models.Book, error)
 	DeleteBook(id int) error
+	GetBookSummaryDTO(id int, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.BookSummaryDTO, error)
+	GetBooksSummaryDTO(query structs.Query, bookQuery structs.BookQuery, visitationService IVisitationService, borrowedService IBorrowedService, bookReadService IBookReadsService) (structs.BooksSummaryDTO, error)
+	GetTotalBooks(bookQuery structs.BookQuery) (int64, error)
 }
 
 type IVisitationService interface {
@@ -28,6 +34,7 @@ type IVisitationService interface {
 	GetVisitationById(id int) (models.Visitation, error)
 	UpdateVisitation(visitation models.Visitation, UserService IUserService) (models.Visitation, error)
 	DeleteVisitation(id int) error
+	GetTotalVisitations(visitationQuery structs.VisitationQuery) (int64, error)
 }
 
 type IBorrowedService interface {
@@ -36,12 +43,18 @@ type IBorrowedService interface {
 	GetBorrowedById(id int) (models.Borrowed, error)
 	UpdateBorrowed(borrowed models.Borrowed, UserService IUserService, BookService IBookService) (models.Borrowed, error)
 	DeleteBorrowed(id int) error
+	GetTotalBorrowings(borrowedQuery structs.BorrowedQuery) (int64, error)
+	GetMostBorrowedBooks(borrowedQuery structs.BorrowedQuery) (structs.MostBorrowedBookDTO, error)
+	GetUserWhoBorrowedBookMost(bookId int, borrowedQuery structs.BorrowedQuery) (structs.BorrowedMostByUserDTO, error)
 }
 
-type IBookReadssService interface {
+type IBookReadsService interface {
 	GetAllBookReadss(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]models.BookReads, int64, error)
 	CreateBookReads(bookRead models.BookReads, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookReads, error)
 	GetBookReadsById(id int) (models.BookReads, error)
 	UpdateBookReads(bookRead models.BookReads, UserService IUserService, BookService IBookService, VisitationService IVisitationService) (models.BookReads, error)
 	DeleteBookReads(id int) error
+	GetTotalBookReads(bookReadQuery structs.BookReadsQuery) (int64, error)
+	GetMostReadBooks(query structs.Query, bookReadQuery structs.BookReadsQuery) ([]structs.MostBookReadsDTO, error)
+	GetUserWithMostBookReads(userId int, bookReadQuery structs.BookReadsQuery) (structs.BookReadMostByUserDTO, error)
 }

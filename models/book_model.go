@@ -2,11 +2,10 @@ package models
 
 import (
 	"time"
-	"victorubere/library/lib/structs"
 )
 
 type Book struct {
-	structs.Model
+	Model
 	Title             string    `json:"title"`
 	Author            string    `json:"author"`
 	ISBN              string    `json:"isbn"`

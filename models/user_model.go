@@ -2,11 +2,10 @@ package models
 
 import (
 	"time"
-	"victorubere/library/lib/structs"
 )
 
 type User struct {
-	structs.Model
+	Model
 	Name        string    `json:"name"`
 	DateOfBirth time.Time `json:"date_of_birth"`
 	Email       string    `json:"email"`

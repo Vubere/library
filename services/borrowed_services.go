@@ -85,3 +85,23 @@ func (r *BorrowedService) DeleteBorrowed(id int) error {
 	}
 	return r.repository.Delete(id)
 }
+
+func (r *BorrowedService) GetUserWhoBorrowedBookMost(bookId int, borrowedQuery structs.BorrowedQuery) (structs.BorrowedMostByUserDTO, error) {
+	borrowedByUser, err := r.repository.UserWhoBorrowedBookMost(bookId, borrowedQuery)
+	if err != nil {
+		return structs.BorrowedMostByUserDTO{}, err
+	}
+	return borrowedByUser, nil
+}
+
+func (r *BorrowedService) GetTotalBorrowings(borrowedQuery structs.BorrowedQuery) (int64, error) {
+	totalBorrowings, err := r.repository.TotalBorrowings(borrowedQuery)
+	if err != nil {
+		return 0, err
+	}
+	return totalBorrowings, nil
+}
+
+func (r *BorrowedService) GetMostBorrowedBooks(borrowedQuery structs.BorrowedQuery) (structs.MostBorrowedBookDTO, error) {
+	return r.repository.MostBorrowedBooks(borrowedQuery)
+}

@@ -18,6 +18,9 @@ func (c *Controller) BookController(rg *gin.RouterGroup) {
 		booksRoutes.GET("/:id", c.GetBookById)
 		booksRoutes.PUT("/:id", c.UpdateBook)
 		booksRoutes.DELETE("/:id", c.DeleteBook)
+		summaryRoutes := booksRoutes.Group("/summary")
+		summaryRoutes.GET("/:id", c.GetBookSummaryDTO)
+		summaryRoutes.GET("", c.GetBooksSummaryDTO)
 	}
 }
 
@@ -148,4 +151,48 @@ func (c *Controller) DeleteBook(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "book deleted", "status": http.StatusOK})
+}
+
+func (c *Controller) GetBookSummaryDTO(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		return
+	}
+	_, err = c.bookService.GetBookById(id)
+	if err != nil {
+		if err.Error() == "record not found" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "book not found"})
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+		return
+	}
+	bookSummary, err := c.bookService.GetBookSummaryDTO(id, c.visitationService, c.borrowedService, c.bookReadService)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"book": bookSummary, "status": http.StatusOK, "message": "success"})
+}
+
+func (c *Controller) GetBooksSummaryDTO(ctx *gin.Context) {
+	var query structs.Query
+	var bookQuery structs.BookQuery
+	err := helpers.BindQuery(ctx, &query)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		return
+	}
+	err = helpers.BindModelQuery(ctx, &bookQuery)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		return
+	}
+	booksSummary, err := c.bookService.GetBooksSummaryDTO(query, bookQuery, c.visitationService, c.borrowedService, c.bookReadService)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error", "error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"books": booksSummary, "status": http.StatusOK, "message": "success"})
 }
