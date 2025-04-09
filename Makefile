@@ -1,4 +1,4 @@
-include .env
+include .envrc
 
 
 #variables
@@ -27,6 +27,7 @@ confirm:
 build:
 	@echo "Building $(APP_NAME)..."
 	@go build -o ${BUILD_DIR} ${CMD_DIR}
+	GOOS=linux GOARCH=amd64 go build -o ./bin/application ./cmd
 
 # ==================================================================================== #
 # DEVELOPMENT

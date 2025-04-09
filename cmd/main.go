@@ -7,18 +7,27 @@ import (
 	"victorubere/library/repository"
 	"victorubere/library/services"
 
+	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
+// db username: admin
+// db password :Du1jO9COEEmzgEKo8BzN
+
+// host;database-1.copayogeootm.us-east-1.rds.amazonaws.com
+// port:3306
 type App struct {
 	db     *sql.DB
 	gormDB *gorm.DB
 }
 
 func main() {
-
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	app := App{}
-	err := app.OpenDB()
+	err = app.OpenDB()
 
 	if err != nil {
 		panic(err)
@@ -47,7 +56,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = router.Run(":9000")
+	err = router.Run(":5000")
 	if err != nil {
 		panic(err)
 	}
